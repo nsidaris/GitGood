@@ -52,13 +52,22 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
     }
         break;
 
-    /* index == 1 -> List of all Stadiums */
+        /* index == 1 -> List of all Stadiums */
     case 1:
+    {
+
+
+
+    }
         break;
-    /* index == 2 -> List of AFC Teams */
+        /* index == 2 -> List of AFC Teams */
     case 2:
+    {
+
+
+    }
         break;
-    /* index == 3 -> List of all NFC Teams */
+        /* index == 3 -> List of all NFC Teams */
     case 3:
     {
         //PROCESSING - inserts column into table
@@ -82,13 +91,44 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
         ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
     }
         break;
-    /* index == 4 -> List of all Open Roof Stadiums */
+        /* index == 4 -> List of all Open Roof Stadiums */
     case 4:
+    {
+
+
+
+    }
         break;
-    /* index == 5 -> List of all Star Players */
+        /* index == 5 -> List of all Star Players */
     case 5:
+    {
+
+
+        ui->Information_Table->insertColumn(0);
+        ui->Information_Table->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
+        ui->Information_Table->insertColumn(1);
+        ui->Information_Table->setHorizontalHeaderItem(1, new QTableWidgetItem("Star Player"));
+
+        QVector<QString> names;     //CALC - names of teams
+        QVector<QString> players;  //CALC - stadium names
+
+        db.GetPlayersByTeamname(names, players);
+        for(int index = 0; index < names.size(); index++)
+        {
+            //PROCESSING - inserts a row to the table and sets information in the table
+            ui->Information_Table->insertRow(index);
+            ui->Information_Table->setItem(index,0,new QTableWidgetItem(names[index]));
+            ui->Information_Table->setItem(index,1,new QTableWidgetItem(players[index]));
+
+        }
+        ui->Information_Table->resizeColumnsToContents();
+        ui->Information_Table->resizeRowsToContents();
+        ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
+
+
+    }
         break;
-    /* index == 6 -> List of Teams by Seating Capacity */
+        /* index == 6 -> List of Teams by Seating Capacity */
     case 6:
     {
         //PROCESSING - inserts column into table
@@ -124,8 +164,40 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
         ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
     }
         break;
-    /* index == 7 -> List of Teams by Surface Type */
+        /* index == 7 -> List of Teams by Surface Type */
     case 7:
+    {
+
+        //PROCESSING - inserts column into table
+        ui->Information_Table->insertColumn(0);
+        ui->Information_Table->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
+        ui->Information_Table->insertColumn(1);
+        ui->Information_Table->setHorizontalHeaderItem(1, new QTableWidgetItem("Stadium Name"));
+        ui->Information_Table->insertColumn(2);
+        ui->Information_Table->setHorizontalHeaderItem(2, new QTableWidgetItem("Surface Type"));
+        ui->Information_Table->insertColumn(3);
+        ui->Information_Table->setHorizontalHeaderItem(3, new QTableWidgetItem("Location"));
+
+        QVector<QString> names;     //CALC - names of teams
+        QVector<QString> stadiums;  //CALC - stadium names
+        QVector<QString>   surface; //CALC - stadium capacitys
+        QVector<QString> locations; //CALC - stadium locations
+        db.GetTeamsSurfaceBySeating(names, stadiums, surface, locations);
+
+
+        for(int index = 0; index < names.size(); index++)
+        {
+            //PROCESSING - inserts a row to the table and sets information in the table
+            ui->Information_Table->insertRow(index);
+            ui->Information_Table->setItem(index,0,new QTableWidgetItem(names[index]));
+            ui->Information_Table->setItem(index,1,new QTableWidgetItem(stadiums[index]));
+            ui->Information_Table->setItem(index,2,new QTableWidgetItem(surface[index]));
+            ui->Information_Table->setItem(index,3,new QTableWidgetItem(locations[index]));
+        }
+        ui->Information_Table->resizeColumnsToContents();
+        ui->Information_Table->resizeRowsToContents();
+        ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
+    }
         break;
     }
 }

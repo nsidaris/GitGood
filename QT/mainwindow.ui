@@ -66,6 +66,9 @@
         <height>501</height>
        </rect>
       </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
      </widget>
      <widget class="QComboBox" name="comboBox_TeamInfo">
       <property name="geometry">
@@ -113,7 +116,7 @@
       </item>
       <item>
        <property name="text">
-        <string>Teams By Surface Time</string>
+        <string>Teams By Surface Type</string>
        </property>
       </item>
      </widget>
@@ -126,7 +129,7 @@
      <x>0</x>
      <y>0</y>
      <width>1034</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

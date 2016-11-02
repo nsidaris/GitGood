@@ -69,9 +69,48 @@ void Database::GetTeamBySeatingCapacity(QVector<QString>& name, QVector<QString>
         }//END - while
     }//END - if
 }
+void Database::GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString> &stadium, QVector<QString> &surface,QVector<QString> &location)
+{
+    QSqlQuery query; //CALC - variable to access the database
 
+    //PROCESSING - sql statement to retrieve info from the database
+    query.prepare("SELECT TEAM_NAME,STADIUM_NAME,SURFACE,LOCATION FROM STADIUM ORDER BY SEATING_CAP");
 
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            name.push_back(query.value(0).toString());
+            stadium.push_back(query.value(1).toString());
+            surface.push_back(query.value(2).toString());
+            location.push_back(query.value(3).toString());
+        }//END - while
+    }
+    else
+    {
+        qDebug()<< query.lastError();
+    }
+}
 
+void Database::GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &players)
+{
+    QSqlQuery query; //CALC - variable to access the database
+
+    query.prepare("SELECT TEAM_NAME, STAR_PLAYER FROM STADIUM ORDER BY TEAM_NAME");
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            names.push_back(query.value(0).toString());
+           players.push_back(query.value(1).toString());
+        }//END - while
+    }
+    else
+    {
+        qDebug()<< query.lastError();
+    }
+}
 
 
 

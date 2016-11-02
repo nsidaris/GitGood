@@ -29,6 +29,10 @@ public:
     void GetTeamBySeatingCapacity(QVector<QString> &name, QVector<QString> &stadium,
                                   QVector<float> &capacity, QVector<QString> &location);
 
+    void GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString> &stadium, QVector<QString> &surface,QVector<QString> &location);
+
+    void GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &players);
+
 
 private:
     QSqlDatabase db;  ///< accesses database
