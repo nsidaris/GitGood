@@ -77,6 +77,9 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
             ui->Information_Table->insertRow(index);
             ui->Information_Table->setItem(index,0,new QTableWidgetItem(nfcTeams[index]));
         }
+        ui->Information_Table->resizeColumnsToContents();
+        ui->Information_Table->resizeRowsToContents();
+        ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
     }
         break;
     /* index == 4 -> List of all Open Roof Stadiums */
@@ -87,6 +90,39 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
         break;
     /* index == 6 -> List of Teams by Seating Capacity */
     case 6:
+    {
+        //PROCESSING - inserts column into table
+        ui->Information_Table->insertColumn(0);
+        ui->Information_Table->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
+        ui->Information_Table->insertColumn(1);
+        ui->Information_Table->setHorizontalHeaderItem(1, new QTableWidgetItem("Stadium Name"));
+        ui->Information_Table->insertColumn(2);
+        ui->Information_Table->setHorizontalHeaderItem(2, new QTableWidgetItem("Seating Capacity"));
+        ui->Information_Table->insertColumn(3);
+        ui->Information_Table->setHorizontalHeaderItem(3, new QTableWidgetItem("Location"));
+
+        QVector<QString> names;     //CALC - names of teams
+        QVector<QString> stadiums;  //CALC - stadium names
+        QVector<float>   capacitys; //CALC - stadium capacitys
+        QVector<QString> locations; //CALC - stadium locations
+
+        //PROCESSING - gets information from database
+        db.GetTeamBySeatingCapacity(names, stadiums, capacitys, locations);
+
+        //PROCESSING - adds a row in table for each team
+        for(int index = 0; index < names.size(); index++)
+        {
+            //PROCESSING - inserts a row to the table and sets information in the table
+            ui->Information_Table->insertRow(index);
+            ui->Information_Table->setItem(index,0,new QTableWidgetItem(names[index]));
+            ui->Information_Table->setItem(index,1,new QTableWidgetItem(stadiums[index]));
+            ui->Information_Table->setItem(index,2,new QTableWidgetItem(QString::number(capacitys[index])));
+            ui->Information_Table->setItem(index,3,new QTableWidgetItem(locations[index]));
+        }
+        ui->Information_Table->resizeColumnsToContents();
+        ui->Information_Table->resizeRowsToContents();
+        ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
+    }
         break;
     /* index == 7 -> List of Teams by Surface Type */
     case 7:

@@ -23,6 +23,5 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
 
-DISTFILES += \
-    football.db
+DISTFILES +=
 
