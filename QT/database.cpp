@@ -3,7 +3,7 @@
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("football.db");
+    db.setDatabaseName("../Database/football.db");
 
     if(!db.open())
         qDebug() << "Not connected to DB.";
@@ -17,13 +17,13 @@ Database::Database()
  */
 QVector<QString> Database::GetNationalConferenceTeams()
 {
-    QSqlQuery        query; //CALC - variable to access the database
+    QSqlQuery        query(db); //CALC - variable to access the database
     QVector<QString> teams;
 
     //PROCESSING - sql statement to retrieve info from the database
     //query.prepare("SELECT TEAM_NAME FROM STADIUM WHERE CONFERENCE = NFC ORDER BY TEAM_NAME ASC");
 
-    query.prepare("SELECT * FROM STADIUM");
+    query.prepare("SELECT TEAM_NAME FROM STADIUM");
 
     qDebug() << "prepare";
 
@@ -34,9 +34,13 @@ QVector<QString> Database::GetNationalConferenceTeams()
         //PROCESSING - loops through the query and outputs data to console for testing
         while(query.next())
         {
-            teams.push_back(query.value(1).toString());
-            qDebug() << query.value(1).toString();
+            teams.push_back(query.value(0).toString());
+            qDebug() << query.value(0).toString();
         }
+    }
+    else
+    {
+        qDebug()<< query.lastError();
     }
 
     return teams;
