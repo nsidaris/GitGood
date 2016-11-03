@@ -21,6 +21,8 @@ void MainWindow::ClearTable(QTableWidget *table)
 {
     int row = table->rowCount();
     int col = table->columnCount();
+    
+    ui->Information_Table->horizontalHeader()->setStretchLastSection(false);
 
     //PROCESSING - removes all rows from table
     for(int i = 0; i < row; i++)
