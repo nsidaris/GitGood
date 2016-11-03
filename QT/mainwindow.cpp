@@ -196,7 +196,7 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
         }
         ui->Information_Table->resizeColumnsToContents();
         ui->Information_Table->resizeRowsToContents();
-        ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
+        //ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
     }
         break;
     }
