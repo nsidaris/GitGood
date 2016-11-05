@@ -65,5 +65,5 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
         break;
     }
     ui->Information_Table->setModel(model);
-    ui->Information_Table->resizeColumnsToContents();
+    ui->Information_Table->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
