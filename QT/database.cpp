@@ -12,6 +12,62 @@ Database::Database()
 }
 
 /**
+ * @brief Database::GetAllTeams
+ * @return 
+ */
+QVector<QString> Database::GetAllTeams()
+{
+    QSqlQuery        query; //CALC - variable to access the database
+    QVector<QString> teams;
+
+    query.prepare("SELECT TEAM_NAME FROM STADIUM ORDER BY TEAM_NAME ASC");
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            teams.push_back(query.value(0).toString());
+        }//END - while
+    }
+    else
+    {
+        qDebug()<< query.lastError();
+    }//END - if
+
+    return teams;
+}
+
+/**
+ * @brief Database::GetAFCTeams
+ * @return 
+ */
+QVector<QString> Database::GetAFCTeams()
+{
+    QSqlQuery        query; //CALC - variable to access the database
+    QVector<QString> teams;
+
+    //PROCESSING - sql statement to retrieve info from the database
+    query.prepare("SELECT TEAM_NAME FROM STADIUM WHERE CONFERENCE = 'AFC' ORDER BY TEAM_NAME ASC");
+
+    //PROCESSING - executes the query
+    if(query.exec())
+    {
+        //PROCESSING - loops through the query and outputs data to console for testing
+        while(query.next())
+        {
+            teams.push_back(query.value(0).toString());
+            //qDebug() << query.value(0).toString();
+        }
+    }
+    else
+    {
+        qDebug()<< query.lastError();
+    }
+
+    return teams;
+}
+
+/**
  * @brief Database::GetNationalConferenceTeams
  * @return
  */
