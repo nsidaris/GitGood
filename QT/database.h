@@ -14,6 +14,18 @@ public:
     Database();
 
     /**
+     * @brief GetAllTeams
+     * @return
+     */
+    QVector<QString> GetAllTeams();
+
+    /**
+     * @brief GetAFCTeams
+     * @return
+     */
+    QVector<QString> GetAFCTeams();
+    
+    /**
      * @brief GetNationalConferenceTeams
      * @return
      */
