@@ -50,7 +50,21 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
     /* index == 0 -> List of all Teams */
     case 0:
     {
+        //insert column
+        ui->Information_Table->insertColumn(0);
+        ui->Information_Table->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
 
+        QVector<QString> allTeams;
+        allTeams = db.GetAllTeams();
+
+        for(int index = 0; index < allTeams.size(); index++)
+        {
+            ui->Information_Table->insertRow(index);
+            ui->Information_Table->setItem(index, 0, new QTableWidgetItem(allTeams[index]));
+        }
+        ui->Information_Table->resizeColumnsToContents();
+        ui->Information_Table->resizeRowsToContents();
+        ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
     }
         break;
 
