@@ -78,8 +78,26 @@ void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
         break;
         /* index == 2 -> List of AFC Teams */
     case 2:
-    {
+    {  
+        //PROCESSING - inserts column into table
+        ui->Information_Table->insertColumn(0);
 
+        //PROCESSING - sets the name of the column header
+        ui->Information_Table->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
+
+        //PROCESSING - Gets all of the national Conference Teams
+        QVector<QString> afcTeams = db.GetAFCTeams();
+
+        //PROCESSING - adds a row in table for each team
+        for(int index = 0; index < afcTeams.size(); index++)
+        {
+            //PROCESSING - inserts a row to the table and sets information to the vector of teams
+            ui->Information_Table->insertRow(index);
+            ui->Information_Table->setItem(index,0,new QTableWidgetItem(afcTeams[index]));
+        }
+        ui->Information_Table->resizeColumnsToContents();
+        ui->Information_Table->resizeRowsToContents();
+        ui->Information_Table->horizontalHeader()->setStretchLastSection(true);
 
     }
         break;
