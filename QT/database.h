@@ -4,7 +4,19 @@
 #include <QtSql>
 #include <QString>
 #include <QVector>
+/*!
+   * \file database.h
+   * \brief  Header for database wrapper class
+   *
+   * This file contains all of the declarations of the database class
+   */
 
+
+/*!
+ * \brief The database class
+ *
+ * Manages the sqlite database of all NFL info
+ */
 class Database
 {
 public:
@@ -41,9 +53,33 @@ public:
     void GetTeamBySeatingCapacity(QVector<QString> &name, QVector<QString> &stadium,
                                   QVector<float> &capacity, QVector<QString> &location);
 
+    /*!
+     * \brief GetTeamsSurfaceBySeating
+     * \param name
+     * \param stadium
+     * \param surface
+     * \param location
+     */
     void GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString> &stadium, QVector<QString> &surface,QVector<QString> &location);
-
+    /*!
+     * \brief GetPlayersByTeamname
+     * \param names
+     * \param players
+     */
     void GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &players);
+    /*!
+     * \brief GetNFLStadiums
+     * \param stadium
+     * \param name
+     */
+
+    void GetNFLStadiums(QVector<QString> &stadium,QVector<QString> &name );
+    /*!
+     * \brief GetOpenStadiums
+     * \param stadium
+     * \param name
+     */
+    void GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name);
 
 
 private:

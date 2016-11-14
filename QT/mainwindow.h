@@ -4,27 +4,63 @@
 #include <QMainWindow>
 #include <QTableWidget>
 #include "database.h"
+#include "login.h"
+#include<QMessageBox>
+#include <QStringList>
 
 namespace Ui {
 class MainWindow;
 }
 
+/*!
+ * \brief The MainWindow class
+ *
+ * MainWindow Class
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    /*!
+     * \brief MainWindow
+     *
+     * Constructor for mainwindow
+     * \param parent
+     */
+    explicit MainWindow(QWidget *parent = 0); //MA
     ~MainWindow();
 
-    void ClearTable(QTableWidget *table);
+
 
 private slots:
-    void on_comboBox_TeamInfo_currentIndexChanged(int index);
+    void on_comboBox_TeamInfo_currentIndexChanged(int index); //select option in information tab
+
+    void on_loginButton_clicked(); //login button
 
 private:
+
     Ui::MainWindow *ui;
-    Database       db;
+    //-----------------------------------------------------------
+    /*
+     * METHODS
+     */
+    void ClearTable(QTableWidget *table);
+
+    //-----------------------------------------------------------
+    /*
+     * INSTANCES(Of other custom objects)
+     */
+     Login logWindow; //instance of the login window
+      Database db;    //instance of the database class
+
+    //-----------------------------------------------------------
+    /*
+     * VARIABLES
+     */
+    bool isLoggedIn; //determines whether or not an admin is logged in
+    //-----------------------------------------------------------
+
 };
 
 #endif // MAINWINDOW_H

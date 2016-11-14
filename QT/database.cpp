@@ -1,5 +1,12 @@
 #include "database.h"
 
+/*!
+   * \file database.cpp
+   * \brief  Source for database wrapper class
+   *
+   * This file contains all of the declarations of the database class
+   */
+
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
@@ -11,10 +18,7 @@ Database::Database()
         qDebug() << "Connected to DB.";
 }
 
-/**
- * @brief Database::GetAllTeams
- * @return 
- */
+
 QVector<QString> Database::GetAllTeams()
 {
     QSqlQuery        query; //CALC - variable to access the database
@@ -37,10 +41,7 @@ QVector<QString> Database::GetAllTeams()
     return teams;
 }
 
-/**
- * @brief Database::GetAFCTeams
- * @return 
- */
+
 QVector<QString> Database::GetAFCTeams()
 {
     QSqlQuery        query; //CALC - variable to access the database
@@ -67,10 +68,7 @@ QVector<QString> Database::GetAFCTeams()
     return teams;
 }
 
-/**
- * @brief Database::GetNationalConferenceTeams
- * @return
- */
+
 QVector<QString> Database::GetNationalConferenceTeams()
 {
     QSqlQuery        query; //CALC - variable to access the database
@@ -97,13 +95,7 @@ QVector<QString> Database::GetNationalConferenceTeams()
     return teams;
 }
 
-/**
- * @brief Database::GetTeamBySeatingCapacity
- * @param name
- * @param stadium
- * @param capacity
- * @param location
- */
+
 void Database::GetTeamBySeatingCapacity(QVector<QString>& name, QVector<QString>& stadium,
                                         QVector<float>& capacity, QVector<QString>& location)
 {
@@ -168,5 +160,44 @@ void Database::GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &p
     }
 }
 
+void Database::GetNFLStadiums(QVector<QString> &stadium,QVector<QString> &name )
+{
+    QSqlQuery query; //CALC - variable to access the database
 
+    query.prepare("SELECT STADIUM_NAME, TEAM_NAME FROM STADIUM ORDER BY TEAM_NAME");
+
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            stadium.push_back(query.value(0).toString());
+            name.push_back(query.value(1).toString());
+        }
+    }
+    else
+    {
+         qDebug()<< query.lastError();
+    }
+}
+void Database::GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name)
+{
+    QSqlQuery query; //CALC - variable to access the database
+
+    query.prepare("SELECT STADIUM_NAME, TEAM_NAME FROM STADIUM WHERE ROOF_TYPE = 'O' ORDER BY STADIUM_NAME");
+
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            stadium.push_back(query.value(0).toString());
+            name.push_back(query.value(1).toString());
+        }
+    }
+    else
+    {
+         qDebug()<< query.lastError();
+    }
+}
 
