@@ -165,32 +165,17 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="TeamsTab">
        <attribute name="title">
         <string>Teams</string>
        </attribute>
-      </widget>
-      <widget class="QWidget" name="SouvenirsTab">
-       <attribute name="title">
-        <string>Souvenirs</string>
-       </attribute>
-       <widget class="QTableWidget" name="TeamsAdminTable">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>20</y>
-          <width>691</width>
-          <height>511</height>
-         </rect>
-        </property>
-       </widget>
        <widget class="QPushButton" name="AddLV_Button">
         <property name="geometry">
          <rect>
-          <x>800</x>
-          <y>20</y>
+          <x>810</x>
+          <y>10</y>
           <width>171</width>
           <height>41</height>
          </rect>
@@ -199,6 +184,21 @@
          <string>Add Las Vegas Team</string>
         </property>
        </widget>
+       <widget class="QTableWidget" name="TeamsAdminTable">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>10</y>
+          <width>691</width>
+          <height>511</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="SouvenirsTab">
+       <attribute name="title">
+        <string>Souvenirs</string>
+       </attribute>
       </widget>
      </widget>
     </widget>

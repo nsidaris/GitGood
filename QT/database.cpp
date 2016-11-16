@@ -246,36 +246,70 @@ void Database::GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name)
  */
 
 
-bool Database::AddLasVegas()
+bool Database::AddLasVegas(QString name, QString stadium, int capacity, QString location,
+                           QString conference, QString surface, QString roof, QString star,
+                           int A, QVector<int> B, QVector<float> distance)
 {
-    QSqlQuery query;//CALC - variable to access the database
+    bool success = false;
+    QSqlQuery query;    //CALC - variable to access the database
 
-    //PROCESSING - Inserts all stadium information for las vegas into the database
-    query.prepare("INSERT INTO STADIUM (TEAM_NAME, STADIUM_NAME, SEATING_CAP, LOCATION, CONFERENCE"
+    /************************************************************************
+     * PROCESSING - Inserts Las Vegas stadium information into the stadium
+     * table
+     ************************************************************************/
+    query.prepare("INSERT INTO STADIUM (TEAM_NAME, STADIUM_NAME, SEATING_CAP, LOCATION, CONFERENCE, "
                   "SURFACE, ROOF_TYPE, STAR_PLAYER) VALUES (:name, :stadium, :capacity, :location, :conference, "
                   ":surface, :roof, :star)");
 
     //PROCESSING - binds all the variables to their corresponding values
-    //query.bindValue(":team", 33);
-    query.bindValue(":name", "Las Vegas Gamblers");
-    query.bindValue(":stadium", "Las Vegas Stadium");
-    query.bindValue(":capacity", 66416);
-    query.bindValue(":location", "Las Vegas, Nevada");
-    query.bindValue(":conference", "NFC");
-    query.bindValue(":surface", "Kentucky Bluegrass");
-    query.bindValue(":roof", 'O');
-    query.bindValue(":star", "Kenny Rogers");
+    query.bindValue(":name", name);
+    query.bindValue(":stadium", stadium);
+    query.bindValue(":capacity", capacity);
+    query.bindValue(":location", location);
+    query.bindValue(":conference", conference);
+    query.bindValue(":surface", surface);
+    query.bindValue(":roof", roof);
+    query.bindValue(":star", star);
 
     //PROCESSING - returns true is the query was executed.
     //              returns false if the query was not executed
     if(query.exec())
     {
-        return true;
+        success = true;
     }
     else
     {
-        qDebug() << query.lastError();
+        success = false;
     }
-    return false;
+
+
+    /************************************************************************
+     * PROCESSING - Inserts all nodes to and from Las Vegas into nodes table
+     ************************************************************************/
+    for(int i = 0; i < B.size(); i++)
+    {
+        query.prepare("INSERT INTO NODES (A, B, DISTANCE) VALUES (:A, :B, :distance)");
+        query.bindValue(":A", A);
+        query.bindValue(":B", B[i]);
+        query.bindValue(":distance", distance[i]);
+
+        /*PROCESSING - returns true is the query was executed
+                returns false if the query was not executed */
+        if(query.exec())
+        {
+            success = true;
+        }
+        else
+        {
+            success = false;
+        }
+    }//END - for(int i = 0; i < A.size(); i++)
+
+    /************************************************************************
+     * NEED TO ADD A QUERY FOR ADDING SOUVENIRS TO THE SOUVINER TABLE
+     ************************************************************************/
+
+
+    return success;
 }
 
