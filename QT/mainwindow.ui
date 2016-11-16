@@ -36,7 +36,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="user">
      <attribute name="title">
@@ -55,7 +55,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Welcome_tab">
        <attribute name="title">
@@ -155,6 +155,52 @@
      <attribute name="title">
       <string>Admin</string>
      </attribute>
+     <widget class="QTabWidget" name="AdminTab">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>1051</width>
+        <height>571</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="TeamsTab">
+       <attribute name="title">
+        <string>Teams</string>
+       </attribute>
+       <widget class="QPushButton" name="AddLV_Button">
+        <property name="geometry">
+         <rect>
+          <x>810</x>
+          <y>10</y>
+          <width>171</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Add Las Vegas Team</string>
+        </property>
+       </widget>
+       <widget class="QTableWidget" name="TeamsAdminTable">
+        <property name="geometry">
+         <rect>
+          <x>30</x>
+          <y>10</y>
+          <width>691</width>
+          <height>511</height>
+         </rect>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="SouvenirsTab">
+       <attribute name="title">
+        <string>Souvenirs</string>
+       </attribute>
+      </widget>
+     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="loginButton">
@@ -190,7 +236,7 @@
      <x>0</x>
      <y>0</y>
      <width>1152</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

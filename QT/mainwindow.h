@@ -38,6 +38,8 @@ private slots:
 
     void on_loginButton_clicked(); //login button
 
+    void on_AddLV_Button_clicked();
+
 private:
 
     Ui::MainWindow *ui;

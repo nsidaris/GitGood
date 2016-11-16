@@ -322,3 +322,46 @@ void MainWindow::on_loginButton_clicked()
 
 
 }
+
+/**
+ * @brief MainWindow::on_AddLV_Button_clicked
+ */
+void MainWindow::on_AddLV_Button_clicked()
+{
+    QVector<QString> allTeams = db.GetAllTeams();//CALC - vector of all teams
+    int A;//CALC - number of Las Vegas
+    QVector<int> B;//CALC - numbers of connected vertices
+    QVector<float> distance;//CALC - distances between vertices
+
+    /*PROCESSING - Sets the Las Vegas number to A
+                 - Pushes back connected vertices to B
+                 - pushes back corresponding distances
+    */
+    A = 33;
+    B.push_back(25);
+    B.push_back(16);
+    B.push_back(32);
+    distance.push_back(350);
+    distance.push_back(250);
+    distance.push_back(300);
+
+    //PROCESSING - Adds las vegas to the database if there are only 32 teams added
+    if(allTeams.size() == 32)
+    {
+        //PROCESSING - adds las vegas to the database and shows message box saying it was added
+        //              successfuly
+        if(db.AddLasVegas("Las Vegas Gamblers", "Las Vegas Stadium", 66416, "Las Vegas, Nevada",
+                          "NFC", "Kentucky Bluegrass", "O", "Kenny Rogers", A, B, distance))
+        {
+            QMessageBox::information(this, tr("Added"),
+                                     "Las Vegas has been added");
+        }
+    }
+    //PROCESSING - shows message box saying Las vegas is already added
+    else
+    {
+        QMessageBox::information(this, tr("Already Added!"),
+                                 "Las Vegas is already in the system");
+    }
+
+}
