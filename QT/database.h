@@ -81,6 +81,8 @@ public:
      */
     void GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name);
 
+    bool AddLasVegas();
+
 
 private:
     QSqlDatabase db;  ///< accesses database

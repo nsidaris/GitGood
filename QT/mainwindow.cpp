@@ -322,3 +322,26 @@ void MainWindow::on_loginButton_clicked()
 
 
 }
+
+/**
+ * @brief MainWindow::on_AddLV_Button_clicked
+ */
+void MainWindow::on_AddLV_Button_clicked()
+{
+    QVector<QString> allTeams = db.GetAllTeams();
+
+    if(allTeams.size() == 32)
+    {
+        if(db.AddLasVegas())
+        {
+            QMessageBox::information(this, tr("Added"),
+                                     "Las Vegas has been added");
+        }
+    }
+    else
+    {
+        QMessageBox::information(this, tr("Already Added!"),
+                                 "Las Vegas is already in the system");
+    }
+
+}

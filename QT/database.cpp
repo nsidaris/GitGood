@@ -6,11 +6,10 @@
    *
    * This file contains all of the declarations of the database class
    */
-
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../Database/football.db");
+    db.setDatabaseName("football.db");
 
     if(!db.open())
         qDebug() << "Not connected to DB.";
@@ -18,7 +17,10 @@ Database::Database()
         qDebug() << "Connected to DB.";
 }
 
-
+/**
+ * @brief Database::GetAllTeams
+ * @return
+ */
 QVector<QString> Database::GetAllTeams()
 {
     QSqlQuery        query; //CALC - variable to access the database
@@ -41,7 +43,10 @@ QVector<QString> Database::GetAllTeams()
     return teams;
 }
 
-
+/**
+ * @brief Database::GetAFCTeams
+ * @return
+ */
 QVector<QString> Database::GetAFCTeams()
 {
     QSqlQuery        query; //CALC - variable to access the database
@@ -68,7 +73,10 @@ QVector<QString> Database::GetAFCTeams()
     return teams;
 }
 
-
+/**
+ * @brief Database::GetNationalConferenceTeams
+ * @return
+ */
 QVector<QString> Database::GetNationalConferenceTeams()
 {
     QSqlQuery        query; //CALC - variable to access the database
@@ -95,7 +103,13 @@ QVector<QString> Database::GetNationalConferenceTeams()
     return teams;
 }
 
-
+/**
+ * @brief Database::GetTeamBySeatingCapacity
+ * @param name
+ * @param stadium
+ * @param capacity
+ * @param location
+ */
 void Database::GetTeamBySeatingCapacity(QVector<QString>& name, QVector<QString>& stadium,
                                         QVector<float>& capacity, QVector<QString>& location)
 {
@@ -117,6 +131,14 @@ void Database::GetTeamBySeatingCapacity(QVector<QString>& name, QVector<QString>
         }//END - while
     }//END - if
 }
+
+/**
+ * @brief Database::GetTeamsSurfaceBySeating
+ * @param name
+ * @param stadium
+ * @param surface
+ * @param location
+ */
 void Database::GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString> &stadium, QVector<QString> &surface,QVector<QString> &location)
 {
     QSqlQuery query; //CALC - variable to access the database
@@ -140,6 +162,11 @@ void Database::GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString>
     }
 }
 
+/**
+ * @brief Database::GetPlayersByTeamname
+ * @param names
+ * @param players
+ */
 void Database::GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &players)
 {
     QSqlQuery query; //CALC - variable to access the database
@@ -160,6 +187,11 @@ void Database::GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &p
     }
 }
 
+/**
+ * @brief Database::GetNFLStadiums
+ * @param stadium
+ * @param name
+ */
 void Database::GetNFLStadiums(QVector<QString> &stadium,QVector<QString> &name )
 {
     QSqlQuery query; //CALC - variable to access the database
@@ -180,6 +212,12 @@ void Database::GetNFLStadiums(QVector<QString> &stadium,QVector<QString> &name )
          qDebug()<< query.lastError();
     }
 }
+
+/**
+ * @brief Database::GetOpenStadiums
+ * @param stadium
+ * @param name
+ */
 void Database::GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name)
 {
     QSqlQuery query; //CALC - variable to access the database
@@ -199,5 +237,45 @@ void Database::GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name)
     {
          qDebug()<< query.lastError();
     }
+}
+
+/**
+ * @brief Database::AddLasVegas
+ * - Adds Las Vegas to the Database
+ * @return true/false if query was executing
+ */
+
+
+bool Database::AddLasVegas()
+{
+    QSqlQuery query;//CALC - variable to access the database
+
+    //PROCESSING - Inserts all stadium information for las vegas into the database
+    query.prepare("INSERT INTO STADIUM (TEAM_NAME, STADIUM_NAME, SEATING_CAP, LOCATION, CONFERENCE"
+                  "SURFACE, ROOF_TYPE, STAR_PLAYER) VALUES (:name, :stadium, :capacity, :location, :conference, "
+                  ":surface, :roof, :star)");
+
+    //PROCESSING - binds all the variables to their corresponding values
+    //query.bindValue(":team", 33);
+    query.bindValue(":name", "Las Vegas Gamblers");
+    query.bindValue(":stadium", "Las Vegas Stadium");
+    query.bindValue(":capacity", 66416);
+    query.bindValue(":location", "Las Vegas, Nevada");
+    query.bindValue(":conference", "NFC");
+    query.bindValue(":surface", "Kentucky Bluegrass");
+    query.bindValue(":roof", 'O');
+    query.bindValue(":star", "Kenny Rogers");
+
+    //PROCESSING - returns true is the query was executed.
+    //              returns false if the query was not executed
+    if(query.exec())
+    {
+        return true;
+    }
+    else
+    {
+        qDebug() << query.lastError();
+    }
+    return false;
 }
 
