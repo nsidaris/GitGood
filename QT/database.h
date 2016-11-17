@@ -83,6 +83,7 @@ public:
 
     bool AddLasVegas(QString name, QString stadium, int capacity, QString location, QString conference, QString surface, QString roof, QString star, int A, QVector<int> B, QVector<float> distance);
 
+    bool AddSouvenir(QString team, QString item, float price);
 
 private:
     QSqlDatabase db;  ///< accesses database

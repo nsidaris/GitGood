@@ -328,15 +328,21 @@ void MainWindow::on_loginButton_clicked()
  */
 void MainWindow::on_AddLV_Button_clicked()
 {
-    QVector<QString> allTeams = db.GetAllTeams();//CALC - vector of all teams
-    int A;//CALC - number of Las Vegas
-    QVector<int> B;//CALC - numbers of connected vertices
-    QVector<float> distance;//CALC - distances between vertices
+    QVector<QString> allTeams = db.GetAllTeams();   //CALC - vector of all teams
+    int              A;                             //CALC - number of Las Vegas
+    QVector<int>     B;                             //CALC - numbers of connected vertices
+    QVector<float>   distance;                      //CALC - distances between vertices
+    QVector<QString> items;                         //CALC - vector of souvenir names
+    QVector<float> prices;                        //CALC - vector of souvenir prices
+    bool valid;
 
-    /*PROCESSING - Sets the Las Vegas number to A
-                 - Pushes back connected vertices to B
-                 - pushes back corresponding distances
-    */
+    /**************************************************
+     * PROCESSING - Sets the Las Vegas number to A
+     *            - Pushes back connected vertices to B
+     *            - pushes back corresponding distances
+     *            - pushes back souvenirs to vector
+     *            - pushes back prices to vector
+    ****************************************************/
     A = 33;
     B.push_back(25);
     B.push_back(16);
@@ -344,6 +350,16 @@ void MainWindow::on_AddLV_Button_clicked()
     distance.push_back(350);
     distance.push_back(250);
     distance.push_back(300);
+    items.push_back("Signed Helmet");
+    items.push_back("Autographed Football");
+    items.push_back("Team Pennat");
+    items.push_back("Team Picture");
+    items.push_back("Team Jersey");
+    prices.push_back(72.99);
+    prices.push_back(49.39);
+    prices.push_back(17.99);
+    prices.push_back(19.99);
+    prices.push_back(185.99);
 
     //PROCESSING - Adds las vegas to the database if there are only 32 teams added
     if(allTeams.size() == 32)
@@ -353,8 +369,16 @@ void MainWindow::on_AddLV_Button_clicked()
         if(db.AddLasVegas("Las Vegas Gamblers", "Las Vegas Stadium", 66416, "Las Vegas, Nevada",
                           "NFC", "Kentucky Bluegrass", "O", "Kenny Rogers", A, B, distance))
         {
-            QMessageBox::information(this, tr("Added"),
-                                     "Las Vegas has been added");
+            for(int i = 0; i < items.size(); i++)
+            {
+                valid = db.AddSouvenir("Las Vegas Gamblers", items[i], prices[i]);
+            }
+
+            if(valid)
+            {
+                QMessageBox::information(this, tr("Added"),
+                                         "Las Vegas has been added");
+            }
         }
     }
     //PROCESSING - shows message box saying Las vegas is already added

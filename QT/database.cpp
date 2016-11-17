@@ -313,3 +313,29 @@ bool Database::AddLasVegas(QString name, QString stadium, int capacity, QString 
     return success;
 }
 
+/**
+ * @brief Database::AddSouvenir
+ * @param team
+ * @param item
+ * @param price
+ * @return
+ */
+bool Database::AddSouvenir(QString team, QString item, float price)
+{
+    QSqlQuery query;
+
+    query.prepare("INSERT INTO SOUVENIRS (TEAM, SOUVENIR, PRICE) VALUES (:team, :item, :price)");
+    query.bindValue(":team", team);
+    query.bindValue(":item", item);
+    query.bindValue(":price", price);
+
+    if(query.exec())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
