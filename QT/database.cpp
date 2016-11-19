@@ -6,10 +6,14 @@
    *
    * This file contains all of the declarations of the database class
    */
+
+/*
+ * "../Database/football.db"
+ */
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("football.db");
+    db.setDatabaseName("../Database/football.db");
 
     if(!db.open())
         qDebug() << "Not connected to DB.";
@@ -337,5 +341,28 @@ bool Database::AddSouvenir(QString team, QString item, float price)
     {
         return false;
     }
+}
+
+void Database::GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QString team)
+{
+    QSqlQuery query;
+
+    query.prepare("SELECT SOUVENIR, PRICE FROM SOUVENIRS WHERE TEAM = (:team)");
+    query.bindValue(":team", team);
+    if(query.exec())
+    {
+        while(query.next())
+        {
+
+            names.push_back(query.value(0).toString());
+            prices.push_back(query.value(1).toDouble());
+
+        }
+    }
+    else
+    {
+        qDebug()<< query.lastError();
+    }
+
 }
 

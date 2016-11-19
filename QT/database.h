@@ -80,10 +80,48 @@ public:
      * \param name
      */
     void GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name);
-
-    bool AddLasVegas(QString name, QString stadium, int capacity, QString location, QString conference, QString surface, QString roof, QString star, int A, QVector<int> B, QVector<float> distance);
+    /*!
+     * \brief AddLasVegas
+     * \param name
+     * \param stadium
+     * \param capacity
+     * \param location
+     * \param conference
+     * \param surface
+     * \param roof
+     * \param star
+     * \param A
+     * \param B
+     * \param distance
+     * \return
+     */
+    bool AddLasVegas(QString name, QString stadium, int capacity,
+                     QString location, QString conference, QString surface,
+                     QString roof, QString star, int A, QVector<int> B,
+                     QVector<float> distance);
+    /*!
+     * \brief AddSouvenir
+     * \param team
+     * \param item
+     * \param price
+     * \return
+     */
 
     bool AddSouvenir(QString team, QString item, float price);
+
+
+    /*!
+     * \brief GetSouvenirs
+     *
+     * Gets souvenirs for a team
+     * \param names
+     * \param prices
+     * \param team
+     */
+    void GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QString team);
+
+
+
 
 private:
     QSqlDatabase db;  ///< accesses database

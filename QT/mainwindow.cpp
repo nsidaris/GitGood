@@ -7,6 +7,8 @@
    *
    * This file contains all of the definitions of the mainwindow class
    */
+//Constructor and destructor
+//------------------------------------------------------------------------------------------------------------------
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->usersTab->setCurrentIndex(0); //set to home page in users tab
     isLoggedIn = false; //set logged in to false
     on_comboBox_TeamInfo_currentIndexChanged(0); //have information filled w/ option 1 on startup
+    fillAdminSouvenirComboBox(); //fill the team combo box in the souvenir tab in the admin area
 
 
 }
@@ -25,7 +28,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
+//private mainwindow methods
+//-------------------------------------------------------------------------------------------------------------------
 /**
  * @brief MainWindow::ClearTable
  *
@@ -37,7 +41,7 @@ void MainWindow::ClearTable(QTableWidget *table)
     int row = table->rowCount();
     int col = table->columnCount();
 
-    ui->Information_Table->horizontalHeader()->setStretchLastSection(false);
+   // ui->Information_Table->horizontalHeader()->setStretchLastSection(false);
 
     //PROCESSING - removes all rows from table
     for(int i = 0; i < row; i++)
@@ -51,6 +55,22 @@ void MainWindow::ClearTable(QTableWidget *table)
         table->removeColumn(0);
     }
 }
+//fills up the combo in the souvenirs tab of admin area
+void::MainWindow::fillAdminSouvenirComboBox()
+{
+    ui->AdminTeamSouvCombo->clear(); //clear it out, this way Las Vegas will be in the correct spot alphabetically
+    QVector<QString> teams = db.GetAllTeams();
+    for(int i = 0; i < teams.size(); i++)
+    {
+        ui->AdminTeamSouvCombo->addItem(teams[i]);
+    }
+
+}
+
+
+
+//Private Slots:
+//-------------------------------------------------------------------------------------------------------------------
 
 /**
  * @brief MainWindow::on_comboBox_TeamInfo_currentIndexChanged
@@ -60,6 +80,7 @@ void MainWindow::ClearTable(QTableWidget *table)
 void MainWindow::on_comboBox_TeamInfo_currentIndexChanged(int index)
 {
     ClearTable(ui->Information_Table);
+    ui->Information_Table->horizontalHeader()->setStretchLastSection(false);
 
     switch(index)
     {
@@ -376,6 +397,8 @@ void MainWindow::on_AddLV_Button_clicked()
 
             if(valid)
             {
+                fillAdminSouvenirComboBox(); //refill the admin souvenir combobox so lv's items can be modifield
+                on_comboBox_TeamInfo_currentIndexChanged(ui->comboBox_TeamInfo->currentIndex()); //update the information tab on the fly, refresh no longer needed
                 QMessageBox::information(this, tr("Added"),
                                          "Las Vegas has been added");
             }
@@ -387,5 +410,37 @@ void MainWindow::on_AddLV_Button_clicked()
         QMessageBox::information(this, tr("Already Added!"),
                                  "Las Vegas is already in the system");
     }
+
+}
+//souvenir tab team selector, allows admin to pick which team's items to modify
+void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)
+{
+
+    ClearTable(ui->AdminSouvTable);
+    //qDebug() << arg1;
+    QString team =  arg1; //ui->AdminTeamSouvCombo->currentText();
+
+    QVector<QString> names;
+    QVector<double> prices;
+    db.GetSouvenirs(names, prices, team);
+    //qDebug() << names.size();
+
+
+    //fill up the table
+    ui->AdminSouvTable->insertColumn(0);
+    ui->AdminSouvTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Item"));
+    ui->AdminSouvTable->insertColumn(1);
+    ui->AdminSouvTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Price"));
+
+
+    for(int i = 0; i < names.size(); i++)
+    {
+       ui->AdminSouvTable->insertRow(i);
+       ui->AdminSouvTable->setItem(i,0,new QTableWidgetItem(names[i]));
+       ui->AdminSouvTable->setItem(i,1,new QTableWidgetItem(QString::number(prices[i], 'f', 2)));
+    }
+   ui->AdminSouvTable->resizeColumnsToContents();
+   ui->AdminSouvTable->resizeRowsToContents();
+    ui->AdminSouvTable->horizontalHeader()->setStretchLastSection(true);
 
 }

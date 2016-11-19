@@ -40,6 +40,8 @@ private slots:
 
     void on_AddLV_Button_clicked();
 
+    void on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1);
+
 private:
 
     Ui::MainWindow *ui;
@@ -47,7 +49,19 @@ private:
     /*
      * METHODS
      */
+
+    /*!
+     * \brief ClearTable
+     *
+     * Clears a qTable widget for reuse
+     * \param table
+     */
     void ClearTable(QTableWidget *table);
+
+    /*!
+     * \brief fillAdminSouvenirComboBox
+     */
+    void fillAdminSouvenirComboBox();
 
     //-----------------------------------------------------------
     /*
