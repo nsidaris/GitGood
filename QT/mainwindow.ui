@@ -36,7 +36,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="user">
      <attribute name="title">
@@ -55,7 +55,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="Welcome_tab">
        <attribute name="title">
@@ -208,9 +208,9 @@
        <widget class="QComboBox" name="AdminTeamSouvCombo">
         <property name="geometry">
          <rect>
-          <x>20</x>
+          <x>30</x>
           <y>30</y>
-          <width>201</width>
+          <width>191</width>
           <height>22</height>
          </rect>
         </property>
@@ -232,6 +232,74 @@
         </property>
         <property name="sortingEnabled">
          <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>900</x>
+          <y>80</y>
+          <width>101</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Add Item&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>410</x>
+          <y>10</y>
+          <width>231</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Souvenir Management&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="NewItemNameInput">
+        <property name="geometry">
+         <rect>
+          <x>830</x>
+          <y>110</y>
+          <width>161</width>
+          <height>20</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="NewItemPriceInput">
+        <property name="geometry">
+         <rect>
+          <x>900</x>
+          <y>140</y>
+          <width>81</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1000.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="NewItemAddButton">
+        <property name="geometry">
+         <rect>
+          <x>900</x>
+          <y>180</y>
+          <width>91</width>
+          <height>21</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Add Souvenir</string>
         </property>
        </widget>
       </widget>
@@ -261,7 +329,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Git Good at Football&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;Git Good at Football&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>

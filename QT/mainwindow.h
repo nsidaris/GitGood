@@ -42,6 +42,10 @@ private slots:
 
     void on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1);
 
+    void on_NewItemAddButton_clicked();
+
+
+
 private:
 
     Ui::MainWindow *ui;

@@ -444,3 +444,37 @@ void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)
     ui->AdminSouvTable->horizontalHeader()->setStretchLastSection(true);
 
 }
+
+//add new souvenir for a team
+void MainWindow::on_NewItemAddButton_clicked()
+{
+    QString souvName = ui->NewItemNameInput->text().trimmed();
+    QString team = ui->AdminTeamSouvCombo->currentText();
+    double price = ui->NewItemPriceInput->value();
+
+    if(!souvName.isEmpty())
+    {
+        if(db.AddSouvenir(team, souvName, price))
+        {
+            on_AdminTeamSouvCombo_currentTextChanged(ui->AdminTeamSouvCombo->currentText()); //update the item table
+            QMessageBox::information(this, tr("Success!"),
+                                     souvName + " was added for team: " + team);
+            //reset the input
+            ui->NewItemNameInput->clear();
+            ui->NewItemPriceInput->setValue(1.00);
+
+        }
+        else
+        {
+            QMessageBox::information(this, tr("Error!"),
+                                     team + " already offers this item");
+        }
+    }
+    else
+    {
+        QMessageBox::information(this, tr("Invalid!"),
+                                 "Please enter all fields");
+    }
+
+}
+

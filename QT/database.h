@@ -120,7 +120,16 @@ public:
      */
     void GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QString team);
 
-
+protected:
+    /*!
+     * \brief Exists
+     *
+     * Checks if an item exists, used to prevent duplicates
+     * \param name
+     * \param team
+     * \return
+     */
+    bool Exists(QString name, QString team);
 
 
 private:

@@ -327,25 +327,34 @@ bool Database::AddLasVegas(QString name, QString stadium, int capacity, QString 
 bool Database::AddSouvenir(QString team, QString item, float price)
 {
     QSqlQuery query;
-
     query.prepare("INSERT INTO SOUVENIRS (TEAM, SOUVENIR, PRICE) VALUES (:team, :item, :price)");
     query.bindValue(":team", team);
     query.bindValue(":item", item);
     query.bindValue(":price", price);
-
-    if(query.exec())
+    if(!Exists(item, team))
     {
-        return true;
+
+        if(query.exec())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
         return false;
     }
+
+
 }
 
 void Database::GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QString team)
 {
     QSqlQuery query;
+
 
     query.prepare("SELECT SOUVENIR, PRICE FROM SOUVENIRS WHERE TEAM = (:team)");
     query.bindValue(":team", team);
@@ -365,4 +374,59 @@ void Database::GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QS
     }
 
 }
+
+bool Database::Exists(QString name, QString team)
+{
+    QSqlQuery query(db);
+
+    query.prepare("SELECT * FROM SOUVENIRS WHERE TEAM = (:team) AND SOUVENIR = (:name)");
+    query.bindValue(":team", team);
+    query.bindValue(":name",name );
+    if(query.exec())
+    {
+        if(query.next())
+        {
+             qDebug() << "Exists";
+            return true;
+        }
+        else
+        {
+            qDebug() << "Non existant";
+            return false;
+        }
+    }
+    else
+    {
+        qDebug() << query.lastError();
+        return false;
+    }
+}
+
+/*
+ * bool dbManager::Exists(QString restName, QString itemName)
+{
+    QSqlQuery query(db);
+
+    query.prepare("SELECT * FROM MenuItems WHERE Owner = (:restName) AND Name = (:itemName)");
+    query.bindValue(":restName", restName);
+    query.bindValue(":itemName", itemName);
+    if(query.exec())
+    {
+        if(query.next())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    else
+    {
+        qDebug() << query.lastError();
+        return false;
+    }
+ *
+ *
+ */
 
