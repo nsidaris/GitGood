@@ -55,6 +55,7 @@ public:
 
     /*!
      * \brief GetTeamsSurfaceBySeating
+     *
      * \param name
      * \param stadium
      * \param surface
@@ -63,12 +64,16 @@ public:
     void GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString> &stadium, QVector<QString> &surface,QVector<QString> &location);
     /*!
      * \brief GetPlayersByTeamname
+     *
+     * Gets star players and teams
      * \param names
      * \param players
      */
     void GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &players);
     /*!
      * \brief GetNFLStadiums
+     *
+     * Gets all nfs stadiums and team names
      * \param stadium
      * \param name
      */
@@ -76,6 +81,8 @@ public:
     void GetNFLStadiums(QVector<QString> &stadium,QVector<QString> &name );
     /*!
      * \brief GetOpenStadiums
+     *
+     * gets all open roofed stadiums and team names
      * \param stadium
      * \param name
      */
@@ -101,6 +108,8 @@ public:
                      QVector<float> distance);
     /*!
      * \brief AddSouvenir
+     *
+     * adds a souvenir for a team
      * \param team
      * \param item
      * \param price
@@ -145,7 +154,23 @@ public:
 
 
 
+    /*!
+     * \brief getItemPrice
+     *
+     * gets the price of an items
+     * \param team
+     * \param item
+     * \return
+     */
     double getItemPrice(QString team, QString item);
+    /*!
+     * \brief updateStadium
+     *
+     * updates stadium name
+     * \param team
+     * \param newStadium
+     */
+    bool updateStadium(QString team, QString newStadium);
 
 
 protected:

@@ -19,7 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->usersTab->setCurrentIndex(0); //set to home page in users tab
     isLoggedIn = false; //set logged in to false
     on_comboBox_TeamInfo_currentIndexChanged(0); //have information filled w/ option 1 on startup
-    fillAdminSouvenirComboBox(); //fill the team combo box in the souvenir tab in the admin area
+   fillTeamComboBoxs(); //fill the team combo box in the souvenir tab in the admin area
+
+    fillAdminTeamTable(); //fill up the admin team table
 
 
 }
@@ -55,14 +57,19 @@ void MainWindow::ClearTable(QTableWidget *table)
         table->removeColumn(0);
     }
 }
-//fills up the combo in the souvenirs tab of admin area
-void::MainWindow::fillAdminSouvenirComboBox()
+//fills up the combo box of TEAMS in the souvenirs AND TEAMS AREA FOR UPDATE tab of admin area
+void::MainWindow::fillTeamComboBoxs()
 {
+    ui->InfoTeamCombobox->clear();
     ui->AdminTeamSouvCombo->clear(); //clear it out, this way Las Vegas will be in the correct spot alphabetically
+     ui->AdminTeamSouvCombo_2->clear();
     QVector<QString> teams = db.GetAllTeams();
     for(int i = 0; i < teams.size(); i++)
     {
         ui->AdminTeamSouvCombo->addItem(teams[i]);
+        ui->AdminTeamSouvCombo_2->addItem(teams[i]);
+        ui->InfoTeamCombobox->addItem(teams[i]);
+
     }
 
 }
@@ -397,8 +404,9 @@ void MainWindow::on_AddLV_Button_clicked()
 
             if(valid)
             {
-                fillAdminSouvenirComboBox(); //refill the admin souvenir combobox so lv's items can be modifield
+                fillTeamComboBoxs(); //refill the admin souvenir combobox so lv's items can be modifield
                 on_comboBox_TeamInfo_currentIndexChanged(ui->comboBox_TeamInfo->currentIndex()); //update the information tab on the fly, refresh no longer needed
+                fillAdminTeamTable(); //update admin team table
                 QMessageBox::information(this, tr("Added"),
                                          "Las Vegas has been added");
             }
@@ -511,12 +519,73 @@ void MainWindow::on_AdminUpdateSouv_clicked()
                    "Price for: " + item + " updated");
     }
 }
-
+//fills the double combo box for price update to the price of the item selected
 void MainWindow::on_AdminItemCombo_currentTextChanged(const QString &arg1)
 {
     QString item = arg1;
     QString team = ui->AdminTeamSouvCombo->currentText();
     ui->UpdateItemPriceInput->setValue(db.getItemPrice(team, item));
 
+
+}
+
+void MainWindow::fillAdminTeamTable()
+{
+    ClearTable(ui->TeamsAdminTable);
+    QVector<QString> names;     //CALC - names of teams
+    QVector<QString> stadiums;  //CALC - stadium names
+    QVector<float>   capacitys; //CALC - stadium capacitys
+    QVector<QString> locations; //CALC - stadium locations
+    ui->TeamsAdminTable->insertColumn(0);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
+    ui->TeamsAdminTable->insertColumn(1);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Stadium Name"));
+    ui->TeamsAdminTable->insertColumn(2);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(2, new QTableWidgetItem("Seating Capacity"));
+    ui->TeamsAdminTable->insertColumn(3);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(3, new QTableWidgetItem("Location"));
+
+
+    //PROCESSING - gets information from database
+    db.GetTeamBySeatingCapacity(names, stadiums, capacitys, locations);
+
+
+    //PROCESSING - adds a row in table for each team
+    for(int index = 0; index < names.size(); index++)
+    {
+        //PROCESSING - inserts a row to the table and sets information in the table
+        ui->TeamsAdminTable->insertRow(index);
+        ui->TeamsAdminTable->setItem(index,0,new QTableWidgetItem(names[index]));
+        ui->TeamsAdminTable->setItem(index,1,new QTableWidgetItem(stadiums[index]));
+        ui->TeamsAdminTable->setItem(index,2,new QTableWidgetItem(QString::number(capacitys[index])));
+        ui->TeamsAdminTable->setItem(index,3,new QTableWidgetItem(locations[index]));
+    }
+    ui->TeamsAdminTable->resizeColumnsToContents();
+    ui->TeamsAdminTable->resizeRowsToContents();
+    ui->TeamsAdminTable->horizontalHeader()->setStretchLastSection(true);
+
+}
+
+
+void MainWindow::on_updateStadNutton_clicked()
+{
+    QString team = ui->AdminTeamSouvCombo_2->currentText();
+    QString newName = ui->AdminStadiumUpdateIn->text().trimmed();
+
+    if(!newName.isEmpty())
+    {
+        if(db.updateStadium(team, newName))
+        {
+            fillAdminTeamTable();
+            ui->AdminStadiumUpdateIn->clear();
+            QMessageBox::information(this, tr("Success!"),
+                       team + " is now located at " + newName);
+        }
+    }
+    else
+    {
+        QMessageBox::information(this, tr("Invalid!"),
+                                 "Please enter all fields");
+    }
 
 }

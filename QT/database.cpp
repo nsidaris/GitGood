@@ -386,12 +386,12 @@ bool Database::Exists(QString name, QString team)
     {
         if(query.next())
         {
-             qDebug() << "Exists";
+            // qDebug() << "Exists";
             return true;
         }
         else
         {
-            qDebug() << "Non existant";
+            //qDebug() << "Non existant";
             return false;
         }
     }
@@ -458,4 +458,25 @@ double Database::getItemPrice(QString team, QString item)
          qDebug() << query.lastError();
      }
      return price;
+}
+
+
+bool Database::updateStadium(QString team, QString newStadium)
+{
+    QSqlQuery query(db);
+    query.prepare("UPDATE STADIUM SET STADIUM_NAME = (:newStad) WHERE TEAM_NAME = (:team)");
+
+    query.bindValue(":newStad", newStadium);
+    query.bindValue(":team", team);
+    if(query.exec())
+    {
+        return true;
+    }
+    else
+    {
+        qDebug() << query.lastError();
+    }
+
+    return false;
+
 }

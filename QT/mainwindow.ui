@@ -36,7 +36,7 @@
      </sizepolicy>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="user">
      <attribute name="title">
@@ -149,6 +149,34 @@
         </item>
        </widget>
       </widget>
+      <widget class="QWidget" name="detailedInfo">
+       <attribute name="title">
+        <string>Information-Detailed</string>
+       </attribute>
+       <widget class="QComboBox" name="InfoTeamCombobox">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>80</y>
+          <width>181</width>
+          <height>22</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_11">
+        <property name="geometry">
+         <rect>
+          <x>570</x>
+          <y>70</y>
+          <width>191</width>
+          <height>111</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This tab is for story 13,&lt;/p&gt;&lt;p&gt;the combo box already fills and &lt;/p&gt;&lt;p&gt;updates when las vegas is added&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="admin">
@@ -165,7 +193,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="TeamsTab">
        <attribute name="title">
@@ -174,8 +202,8 @@
        <widget class="QPushButton" name="AddLV_Button">
         <property name="geometry">
          <rect>
-          <x>810</x>
-          <y>10</y>
+          <x>20</x>
+          <y>450</y>
           <width>171</width>
           <height>41</height>
          </rect>
@@ -188,16 +216,103 @@
         <property name="geometry">
          <rect>
           <x>30</x>
-          <y>10</y>
-          <width>691</width>
-          <height>511</height>
+          <y>50</y>
+          <width>991</width>
+          <height>391</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
         <property name="sortingEnabled">
          <bool>true</bool>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="AdminTeamSouvCombo_2">
+        <property name="geometry">
+         <rect>
+          <x>460</x>
+          <y>490</y>
+          <width>201</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <family>MS Shell Dlg 2</family>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
+        </property>
+       </widget>
+       <widget class="QLineEdit" name="AdminStadiumUpdateIn">
+        <property name="geometry">
+         <rect>
+          <x>670</x>
+          <y>490</y>
+          <width>201</width>
+          <height>21</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="updateStadNutton">
+        <property name="geometry">
+         <rect>
+          <x>890</x>
+          <y>490</y>
+          <width>111</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Change stadium</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>370</x>
+          <y>10</y>
+          <width>231</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Team Management&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>480</x>
+          <y>450</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Select team to update:&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_10">
+        <property name="geometry">
+         <rect>
+          <x>680</x>
+          <y>450</y>
+          <width>171</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;New Stadium&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>

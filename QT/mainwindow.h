@@ -52,9 +52,11 @@ private slots:
 
     void on_AdminItemCombo_currentTextChanged(const QString &arg1);
 
+    void on_updateStadNutton_clicked();
+
 private:
 
-    Ui::MainWindow *ui;
+    Ui::MainWindow *ui; //mainwindow
     //-----------------------------------------------------------
     /*
      * METHODS
@@ -71,7 +73,9 @@ private:
     /*!
      * \brief fillAdminSouvenirComboBox
      */
-    void fillAdminSouvenirComboBox();
+    void fillTeamComboBoxs(); //fill all team combo boxes up
+
+    void fillAdminTeamTable();//fill team table in admin tab
 
     //-----------------------------------------------------------
     /*
