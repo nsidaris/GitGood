@@ -209,10 +209,13 @@
         <property name="geometry">
          <rect>
           <x>100</x>
-          <y>70</y>
+          <y>61</y>
           <width>241</width>
-          <height>22</height>
+          <height>31</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 10pt &quot;MS Shell Dlg 2&quot;;</string>
         </property>
        </widget>
        <widget class="QTableWidget" name="AdminSouvTable">
@@ -220,9 +223,12 @@
          <rect>
           <x>20</x>
           <y>100</y>
-          <width>351</width>
+          <width>361</width>
           <height>431</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 11pt &quot;MS Shell Dlg 2&quot;;</string>
         </property>
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
@@ -305,9 +311,9 @@
        <widget class="QLabel" name="label_5">
         <property name="geometry">
          <rect>
-          <x>830</x>
+          <x>860</x>
           <y>240</y>
-          <width>101</width>
+          <width>161</width>
           <height>21</height>
          </rect>
         </property>
@@ -365,6 +371,51 @@
         </property>
         <property name="text">
          <string>Delete</string>
+        </property>
+       </widget>
+       <widget class="QPushButton" name="AdminUpdateSouv">
+        <property name="geometry">
+         <rect>
+          <x>950</x>
+          <y>350</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Update Price</string>
+        </property>
+       </widget>
+       <widget class="QDoubleSpinBox" name="UpdateItemPriceInput">
+        <property name="geometry">
+         <rect>
+          <x>840</x>
+          <y>330</y>
+          <width>81</width>
+          <height>22</height>
+         </rect>
+        </property>
+        <property name="minimum">
+         <double>0.010000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>1000.000000000000000</double>
+        </property>
+        <property name="value">
+         <double>1.000000000000000</double>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>840</x>
+          <y>310</y>
+          <width>41</width>
+          <height>16</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Price: &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </widget>

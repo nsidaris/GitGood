@@ -498,3 +498,25 @@ void MainWindow::on_AdminDeleteSouv_clicked()
                                  "Error occured, bug Nick on discord");
     }
 }
+
+void MainWindow::on_AdminUpdateSouv_clicked()
+{
+    QString team = ui->AdminTeamSouvCombo->currentText();
+    QString item = ui->AdminItemCombo->currentText();
+    double newPrice = ui->UpdateItemPriceInput->value();
+    if(db.UpdateItem(team, item, newPrice))
+    {
+        on_AdminTeamSouvCombo_currentTextChanged(ui->AdminTeamSouvCombo->currentText()); //update the item table
+        QMessageBox::information(this, tr("Success!"),
+                   "Price for: " + item + " updated");
+    }
+}
+
+void MainWindow::on_AdminItemCombo_currentTextChanged(const QString &arg1)
+{
+    QString item = arg1;
+    QString team = ui->AdminTeamSouvCombo->currentText();
+    ui->UpdateItemPriceInput->setValue(db.getItemPrice(team, item));
+
+
+}

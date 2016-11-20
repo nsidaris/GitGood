@@ -130,6 +130,24 @@ public:
 
     bool DeleteItem(QString team, QString item);
 
+    /*!
+     * \brief UpdateItem
+     *
+     * updates item's price
+     *
+     * \param team
+     * \param item
+     * \param price
+     * \return
+     */
+
+    bool UpdateItem(QString team, QString item, double price);
+
+
+
+    double getItemPrice(QString team, QString item);
+
+
 protected:
     /*!
      * \brief Exists
@@ -140,6 +158,7 @@ protected:
      * \return
      */
     bool Exists(QString name, QString team);
+
 
 
 private:

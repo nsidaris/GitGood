@@ -420,3 +420,42 @@ bool Database::DeleteItem(QString team, QString item)
     }
 }
 
+bool Database::UpdateItem(QString team, QString item, double price)
+{
+    QSqlQuery query(db);
+    query.prepare("UPDATE SOUVENIRS SET PRICE = (:price) WHERE TEAM = (:team) AND SOUVENIR = (:name)");
+    query.bindValue(":team", team);
+    query.bindValue(":name",item );
+    query.bindValue(":price",price);
+    if(query.exec())
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+
+double Database::getItemPrice(QString team, QString item)
+{
+    double price = 0.2;
+     QSqlQuery query(db);
+     query.prepare("SELECT PRICE FROM SOUVENIRS WHERE TEAM = (:team) AND SOUVENIR = (:name)");
+     query.bindValue(":team", team);
+     query.bindValue(":name",item );
+     if(query.exec())
+     {
+         if(query.next())
+         {
+              price = query.value(0).toDouble();
+         }
+
+     }
+     else
+     {
+         qDebug() << query.lastError();
+     }
+     return price;
+}

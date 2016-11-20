@@ -48,6 +48,10 @@ private slots:
 
     void on_AdminDeleteSouv_clicked();
 
+    void on_AdminUpdateSouv_clicked();
+
+    void on_AdminItemCombo_currentTextChanged(const QString &arg1);
+
 private:
 
     Ui::MainWindow *ui;
