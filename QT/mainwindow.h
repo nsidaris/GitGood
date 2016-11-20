@@ -46,6 +46,8 @@ private slots:
 
 
 
+    void on_AdminDeleteSouv_clicked();
+
 private:
 
     Ui::MainWindow *ui;

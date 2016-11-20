@@ -416,9 +416,11 @@ void MainWindow::on_AddLV_Button_clicked()
 void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)
 {
 
+    ui->AdminItemCombo->clear();
     ClearTable(ui->AdminSouvTable);
     //qDebug() << arg1;
     QString team =  arg1; //ui->AdminTeamSouvCombo->currentText();
+    ui->AdminTeamIndLabel->setText("Modifying: The " + team);
 
     QVector<QString> names;
     QVector<double> prices;
@@ -437,6 +439,7 @@ void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)
     {
        ui->AdminSouvTable->insertRow(i);
        ui->AdminSouvTable->setItem(i,0,new QTableWidgetItem(names[i]));
+       ui->AdminItemCombo->addItem(names[i]);
        ui->AdminSouvTable->setItem(i,1,new QTableWidgetItem(QString::number(prices[i], 'f', 2)));
     }
    ui->AdminSouvTable->resizeColumnsToContents();
@@ -478,3 +481,20 @@ void MainWindow::on_NewItemAddButton_clicked()
 
 }
 
+
+void MainWindow::on_AdminDeleteSouv_clicked()
+{
+    QString team = ui->AdminTeamSouvCombo->currentText();
+    QString item = ui->AdminItemCombo->currentText();
+    if(db.DeleteItem(team, item))
+    {
+        on_AdminTeamSouvCombo_currentTextChanged(ui->AdminTeamSouvCombo->currentText()); //update the item table
+        QMessageBox::information(this, tr("Deleted!"),
+                                 item + " was removed for team: " + team);
+    }
+    else
+    {
+        QMessageBox::information(this, tr("Error!"),
+                                 "Error occured, bug Nick on discord");
+    }
+}

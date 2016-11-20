@@ -402,31 +402,21 @@ bool Database::Exists(QString name, QString team)
     }
 }
 
-/*
- * bool dbManager::Exists(QString restName, QString itemName)
+bool Database::DeleteItem(QString team, QString item)
 {
     QSqlQuery query(db);
 
-    query.prepare("SELECT * FROM MenuItems WHERE Owner = (:restName) AND Name = (:itemName)");
-    query.bindValue(":restName", restName);
-    query.bindValue(":itemName", itemName);
+    query.prepare("DELETE FROM SOUVENIRS WHERE TEAM = (:team) AND SOUVENIR = (:name)");
+    query.bindValue(":team", team);
+    query.bindValue(":name",item );
     if(query.exec())
     {
-        if(query.next())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return true;
     }
     else
     {
         qDebug() << query.lastError();
         return false;
     }
- *
- *
- */
+}
 

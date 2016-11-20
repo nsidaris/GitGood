@@ -119,6 +119,16 @@ public:
      * \param team
      */
     void GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QString team);
+    /*!
+     * \brief DeleteItem
+     *
+     * Removes an item from a team
+     * \param team
+     * \param item
+     * \return
+     */
+
+    bool DeleteItem(QString team, QString item);
 
 protected:
     /*!
