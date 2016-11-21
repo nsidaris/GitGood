@@ -351,6 +351,12 @@ bool Database::AddSouvenir(QString team, QString item, float price)
 
 }
 
+/**
+ * @brief Database::GetSouvenirs
+ * @param names
+ * @param prices
+ * @param team
+ */
 void Database::GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QString team)
 {
     QSqlQuery query;
@@ -375,6 +381,12 @@ void Database::GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QS
 
 }
 
+/**
+ * @brief Database::Exists
+ * @param name
+ * @param team
+ * @return
+ */
 bool Database::Exists(QString name, QString team)
 {
     QSqlQuery query(db);
@@ -402,6 +414,12 @@ bool Database::Exists(QString name, QString team)
     }
 }
 
+/**
+ * @brief Database::DeleteItem
+ * @param team
+ * @param item
+ * @return
+ */
 bool Database::DeleteItem(QString team, QString item)
 {
     QSqlQuery query(db);
@@ -420,6 +438,13 @@ bool Database::DeleteItem(QString team, QString item)
     }
 }
 
+/**
+ * @brief Database::UpdateItem
+ * @param team
+ * @param item
+ * @param price
+ * @return
+ */
 bool Database::UpdateItem(QString team, QString item, double price)
 {
     QSqlQuery query(db);
@@ -437,7 +462,12 @@ bool Database::UpdateItem(QString team, QString item, double price)
     }
 }
 
-
+/**
+ * @brief Database::getItemPrice
+ * @param team
+ * @param item
+ * @return
+ */
 double Database::getItemPrice(QString team, QString item)
 {
     double price = 0.2;
@@ -460,7 +490,12 @@ double Database::getItemPrice(QString team, QString item)
      return price;
 }
 
-
+/**
+ * @brief Database::updateStadium
+ * @param team
+ * @param newStadium
+ * @return
+ */
 bool Database::updateStadium(QString team, QString newStadium)
 {
     QSqlQuery query(db);
@@ -479,4 +514,76 @@ bool Database::updateStadium(QString team, QString newStadium)
 
     return false;
 
+}
+
+/**
+ * @brief Database::GetAllTeamInfo
+ * @param name
+ * @param stadium
+ * @param seating
+ * @param location
+ * @param conference
+ * @param surface
+ * @param roof
+ * @param player
+ */
+void Database::GetAllTeamInfo(QVector<QString>& name, QVector<QString>& stadium, QVector<double>& seating,
+                              QVector<QString>& location, QVector<QString>& conference,
+                              QVector<QString>& surface, QVector<QString>& roof, QVector<QString>& player)
+{
+    QSqlQuery query(db);//CALC - variable to access database
+
+    //PROCESSING - sql statement to get information from stadium
+    query.prepare("SELECT * FROM STADIUM");
+
+    //PROCESSING - executes statement
+    if(query.exec())
+    {
+        //PROCESSING - loops through query and adds teams information to vectors
+        while(query.next())
+        {
+            name.push_back(query.value(1).toString());
+            stadium.push_back(query.value(2).toString());
+            seating.push_back(query.value(3).toDouble(0));
+            location.push_back(query.value(4).toString());
+
+            //PROCESSING - adds conference name based on input.
+            //          AFC = American Football Conference
+            //          NFC = National Football Conference
+            if(query.value(5).toString() == "AFC")
+            {
+                conference.push_back("American Football Conference");
+            }
+            else
+            {
+                conference.push_back("National Football Conference");
+            }
+
+            surface.push_back(query.value(6).toString());
+
+            //PROCESSING - adds conference name based on input.
+            //          O = Open
+            //          F = Fixed
+            //          R = Retractable
+            if(query.value(7).toString() == "O")
+            {
+                roof.push_back("Open");
+            }
+            else if(query.value(7).toString() == "F")
+            {
+                roof.push_back("Fixed");
+            }
+            else
+            {
+                roof.push_back("Retractable");
+            }
+
+            player.push_back(query.value(8).toString());
+
+        }//END while
+    }//END if
+    else
+    {
+        qDebug() << query.lastError();
+    }
 }

@@ -172,6 +172,10 @@ public:
      */
     bool updateStadium(QString team, QString newStadium);
 
+    void GetAllTeamInfo(QVector<QString> &name, QVector<QString> &stadium, QVector<double> &seating,
+                        QVector<QString> &location, QVector<QString> &conference,
+                        QVector<QString> &surface, QVector<QString> &roof, QVector<QString> &player);
+
 
 protected:
     /*!

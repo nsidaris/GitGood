@@ -589,3 +589,86 @@ void MainWindow::on_updateStadNutton_clicked()
     }
 
 }
+
+/**
+ * @brief MainWindow::on_InfoTeamCombobox_currentIndexChanged
+ * @param arg1
+ */
+void MainWindow::on_InfoTeamCombobox_currentIndexChanged(const QString &arg1)
+{
+    //PROCESSING - clear table
+    ClearTable(ui->TeamInfo);
+
+    QVector<QString> name;      //CALC - vector of team names
+    QVector<QString> stadium;   //CALC - vector of stadium names
+    QVector<double>  seating;   //CALC - vector of seating capacities
+    QVector<QString> location;  //CALC - vector of locations
+    QVector<QString> conference;//CALC - vector of conferences
+    QVector<QString> surface;   //CALC - vector of surfaces
+    QVector<QString> roof;      //CALC - vector of roofs
+    QVector<QString> player;    //CALC - vector of players
+
+    //PROCESSING - Gets all of teams info name
+    db.GetAllTeamInfo(name, stadium, seating, location, conference, surface, roof, player);
+
+    //PROCESSING - loops through each name in vector and fills table based on choice in combo
+    //              box
+    for(int i = 0; i < name.size(); i++)
+    {
+        //PROCESSING - fills table based on choice in combo box
+        if(name[i] == arg1)
+        {
+            //PROCESSING - inserts column and sets name to name of team
+            ui->TeamInfo->insertColumn(0);
+            ui->TeamInfo->setHorizontalHeaderItem(0, new QTableWidgetItem(name[i]));
+
+            //PROCESSING - inserts row and sets row header to stadium
+            //              adds stadium name to row
+            ui->TeamInfo->insertRow(0);
+            ui->TeamInfo->setVerticalHeaderItem(0, new QTableWidgetItem("Stadium"));
+            ui->TeamInfo->setItem(0,0, new QTableWidgetItem(stadium[i]));
+
+            //PROCESSING - inserts row and sets row header to Seating Capacity
+            //              adds seating capacity
+            ui->TeamInfo->insertRow(1);
+            ui->TeamInfo->setVerticalHeaderItem(1, new QTableWidgetItem("Seating Capacity"));
+            ui->TeamInfo->setItem(1,0, new QTableWidgetItem(QString::number(seating[i])));
+
+            //PROCESSING - inserts row and sets row header to Location
+            //              adds location to row
+            ui->TeamInfo->insertRow(2);
+            ui->TeamInfo->setVerticalHeaderItem(2, new QTableWidgetItem("Location"));
+            ui->TeamInfo->setItem(2,0, new QTableWidgetItem(location[i]));
+
+            //PROCESSING - inserts row and sets row header to Conference
+            //              adds conference to row
+            ui->TeamInfo->insertRow(3);
+            ui->TeamInfo->setVerticalHeaderItem(3, new QTableWidgetItem("Conference"));
+            ui->TeamInfo->setItem(3,0, new QTableWidgetItem(conference[i]));
+
+            //PROCESSING - inserts row and sets row header to Stadium name
+            //              adds stadium name to row
+            ui->TeamInfo->insertRow(4);
+            ui->TeamInfo->setVerticalHeaderItem(4, new QTableWidgetItem("Stadium Name"));
+            ui->TeamInfo->setItem(4,0, new QTableWidgetItem(surface[i]));
+
+            //PROCESSING - inserts row and sets row header to Roof Type
+            //              adds roof type to row
+            ui->TeamInfo->insertRow(5);
+            ui->TeamInfo->setVerticalHeaderItem(5, new QTableWidgetItem("Roof Type"));
+            ui->TeamInfo->setItem(5,0, new QTableWidgetItem(roof[i]));
+
+            //PROCESSING - inserts row and sets row header to Star Player
+            //              adds star player to row
+            ui->TeamInfo->insertRow(6);
+            ui->TeamInfo->setVerticalHeaderItem(6, new QTableWidgetItem("Star Player"));
+            ui->TeamInfo->setItem(6,0, new QTableWidgetItem(player[i]));
+
+            //PROCESSING - resizes rows and columns of table
+            ui->TeamInfo->resizeColumnsToContents();
+            ui->TeamInfo->resizeRowsToContents();
+            ui->TeamInfo->horizontalHeader()->setStretchLastSection(true);
+        }
+    }
+}
+

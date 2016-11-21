@@ -54,6 +54,8 @@ private slots:
 
     void on_updateStadNutton_clicked();
 
+    void on_InfoTeamCombobox_currentIndexChanged(const QString &arg1);
+
 private:
 
     Ui::MainWindow *ui; //mainwindow

@@ -55,7 +55,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="Welcome_tab">
        <attribute name="title">
@@ -166,8 +166,8 @@
        <widget class="QLabel" name="label_11">
         <property name="geometry">
          <rect>
-          <x>570</x>
-          <y>70</y>
+          <x>80</x>
+          <y>170</y>
           <width>191</width>
           <height>111</height>
          </rect>
@@ -175,6 +175,65 @@
         <property name="text">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This tab is for story 13,&lt;/p&gt;&lt;p&gt;the combo box already fills and &lt;/p&gt;&lt;p&gt;updates when las vegas is added&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
+       </widget>
+       <widget class="QTableWidget" name="TeamInfo">
+        <property name="geometry">
+         <rect>
+          <x>290</x>
+          <y>20</y>
+          <width>691</width>
+          <height>241</height>
+         </rect>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <row>
+         <property name="text">
+          <string>Stadium Name</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Seating Capacity</string>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>18</pointsize>
+          </font>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Location</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Surface Type</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Location</string>
+         </property>
+        </row>
+        <row>
+         <property name="text">
+          <string>Star Player</string>
+         </property>
+        </row>
        </widget>
       </widget>
      </widget>
@@ -193,7 +252,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="TeamsTab">
        <attribute name="title">
@@ -570,7 +629,7 @@
      <x>0</x>
      <y>0</y>
      <width>1152</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
