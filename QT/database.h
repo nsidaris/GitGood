@@ -171,10 +171,27 @@ public:
      * \param newStadium
      */
     bool updateStadium(QString team, QString newStadium);
+    /*!
+     * \brief GetAllTeamInfo
+     * \param name
+     * \param stadium
+     * \param seating
+     * \param location
+     * \param conference
+     * \param surface
+     * \param roof
+     * \param player
+     */
 
     void GetAllTeamInfo(QVector<QString> &name, QVector<QString> &stadium, QVector<double> &seating,
                         QVector<QString> &location, QVector<QString> &conference,
                         QVector<QString> &surface, QVector<QString> &roof, QVector<QString> &player);
+
+    /*!
+     * \brief seatingSum
+     * \return
+     */
+    int seatingSum();
 
 
 protected:

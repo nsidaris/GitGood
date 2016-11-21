@@ -587,3 +587,25 @@ void Database::GetAllTeamInfo(QVector<QString>& name, QVector<QString>& stadium,
         qDebug() << query.lastError();
     }
 }
+
+int Database::seatingSum()
+{
+    int sum = 0;
+    QSqlQuery query(db);//CALC - variable to access database
+
+    //PROCESSING - sql statement to get information from stadium
+    query.prepare("SELECT SUM(SEATING_CAP)FROM STADIUM");
+    if(query.exec())
+    {
+        if(query.next())
+        {
+            sum = query.value(0).toInt();
+        }
+    }
+    else
+    {
+        qDebug() << query.lastError();
+    }
+    return sum;
+
+}

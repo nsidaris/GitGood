@@ -56,6 +56,8 @@ private slots:
 
     void on_InfoTeamCombobox_currentIndexChanged(const QString &arg1);
 
+    void on_testButton_clicked();
+
 private:
 
     Ui::MainWindow *ui; //mainwindow

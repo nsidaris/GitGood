@@ -80,6 +80,19 @@
          <bool>true</bool>
         </property>
        </widget>
+       <widget class="QPushButton" name="testButton">
+        <property name="geometry">
+         <rect>
+          <x>50</x>
+          <y>190</y>
+          <width>75</width>
+          <height>23</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>PushButton</string>
+        </property>
+       </widget>
       </widget>
       <widget class="QWidget" name="Info_Tab">
        <attribute name="title">
@@ -163,17 +176,20 @@
          </rect>
         </property>
        </widget>
-       <widget class="QLabel" name="label_11">
+       <widget class="QLabel" name="SeatingCapDispLabel">
         <property name="geometry">
          <rect>
-          <x>80</x>
-          <y>170</y>
-          <width>191</width>
-          <height>111</height>
+          <x>30</x>
+          <y>310</y>
+          <width>361</width>
+          <height>61</height>
          </rect>
         </property>
+        <property name="styleSheet">
+         <string notr="true">font: 16pt &quot;MS Shell Dlg 2&quot;;</string>
+        </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This tab is for story 13,&lt;/p&gt;&lt;p&gt;the combo box already fills and &lt;/p&gt;&lt;p&gt;updates when las vegas is added&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Seating Capacity Total:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
        <widget class="QTableWidget" name="TeamInfo">
@@ -629,7 +645,7 @@
      <x>0</x>
      <y>0</y>
      <width>1152</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

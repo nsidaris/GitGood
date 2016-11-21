@@ -71,9 +71,46 @@ void::MainWindow::fillTeamComboBoxs()
         ui->InfoTeamCombobox->addItem(teams[i]);
 
     }
+    ui->SeatingCapDispLabel->setText("Total Seating Capacity: " + QString::number(db.seatingSum()));
 
 }
 
+void MainWindow::fillAdminTeamTable()
+{
+    ClearTable(ui->TeamsAdminTable);
+    QVector<QString> names;     //CALC - names of teams
+    QVector<QString> stadiums;  //CALC - stadium names
+    QVector<float>   capacitys; //CALC - stadium capacitys
+    QVector<QString> locations; //CALC - stadium locations
+    ui->TeamsAdminTable->insertColumn(0);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
+    ui->TeamsAdminTable->insertColumn(1);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Stadium Name"));
+    ui->TeamsAdminTable->insertColumn(2);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(2, new QTableWidgetItem("Seating Capacity"));
+    ui->TeamsAdminTable->insertColumn(3);
+    ui->TeamsAdminTable->setHorizontalHeaderItem(3, new QTableWidgetItem("Location"));
+
+
+    //PROCESSING - gets information from database
+    db.GetTeamBySeatingCapacity(names, stadiums, capacitys, locations);
+
+
+    //PROCESSING - adds a row in table for each team
+    for(int index = 0; index < names.size(); index++)
+    {
+        //PROCESSING - inserts a row to the table and sets information in the table
+        ui->TeamsAdminTable->insertRow(index);
+        ui->TeamsAdminTable->setItem(index,0,new QTableWidgetItem(names[index]));
+        ui->TeamsAdminTable->setItem(index,1,new QTableWidgetItem(stadiums[index]));
+        ui->TeamsAdminTable->setItem(index,2,new QTableWidgetItem(QString::number(capacitys[index])));
+        ui->TeamsAdminTable->setItem(index,3,new QTableWidgetItem(locations[index]));
+    }
+    ui->TeamsAdminTable->resizeColumnsToContents();
+    ui->TeamsAdminTable->resizeRowsToContents();
+    ui->TeamsAdminTable->horizontalHeader()->setStretchLastSection(true);
+
+}
 
 
 //Private Slots:
@@ -529,44 +566,9 @@ void MainWindow::on_AdminItemCombo_currentTextChanged(const QString &arg1)
 
 }
 
-void MainWindow::fillAdminTeamTable()
-{
-    ClearTable(ui->TeamsAdminTable);
-    QVector<QString> names;     //CALC - names of teams
-    QVector<QString> stadiums;  //CALC - stadium names
-    QVector<float>   capacitys; //CALC - stadium capacitys
-    QVector<QString> locations; //CALC - stadium locations
-    ui->TeamsAdminTable->insertColumn(0);
-    ui->TeamsAdminTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
-    ui->TeamsAdminTable->insertColumn(1);
-    ui->TeamsAdminTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Stadium Name"));
-    ui->TeamsAdminTable->insertColumn(2);
-    ui->TeamsAdminTable->setHorizontalHeaderItem(2, new QTableWidgetItem("Seating Capacity"));
-    ui->TeamsAdminTable->insertColumn(3);
-    ui->TeamsAdminTable->setHorizontalHeaderItem(3, new QTableWidgetItem("Location"));
 
 
-    //PROCESSING - gets information from database
-    db.GetTeamBySeatingCapacity(names, stadiums, capacitys, locations);
-
-
-    //PROCESSING - adds a row in table for each team
-    for(int index = 0; index < names.size(); index++)
-    {
-        //PROCESSING - inserts a row to the table and sets information in the table
-        ui->TeamsAdminTable->insertRow(index);
-        ui->TeamsAdminTable->setItem(index,0,new QTableWidgetItem(names[index]));
-        ui->TeamsAdminTable->setItem(index,1,new QTableWidgetItem(stadiums[index]));
-        ui->TeamsAdminTable->setItem(index,2,new QTableWidgetItem(QString::number(capacitys[index])));
-        ui->TeamsAdminTable->setItem(index,3,new QTableWidgetItem(locations[index]));
-    }
-    ui->TeamsAdminTable->resizeColumnsToContents();
-    ui->TeamsAdminTable->resizeRowsToContents();
-    ui->TeamsAdminTable->horizontalHeader()->setStretchLastSection(true);
-
-}
-
-
+//update stadium names
 void MainWindow::on_updateStadNutton_clicked()
 {
     QString team = ui->AdminTeamSouvCombo_2->currentText();
@@ -672,3 +674,8 @@ void MainWindow::on_InfoTeamCombobox_currentIndexChanged(const QString &arg1)
     }
 }
 
+
+void MainWindow::on_testButton_clicked()
+{
+    qDebug() << db.seatingSum();
+}
