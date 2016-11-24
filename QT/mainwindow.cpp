@@ -57,7 +57,12 @@ void MainWindow::ClearTable(QTableWidget *table)
         table->removeColumn(0);
     }
 }
+
+
 //fills up the combo box of TEAMS in the souvenirs AND TEAMS AREA FOR UPDATE tab of admin area
+/**
+ * @brief ::MainWindow::fillTeamComboBoxs
+ */
 void::MainWindow::fillTeamComboBoxs()
 {
     ui->InfoTeamCombobox->clear();
@@ -71,10 +76,15 @@ void::MainWindow::fillTeamComboBoxs()
         ui->InfoTeamCombobox->addItem(teams[i]);
 
     }
-    ui->SeatingCapDispLabel->setText("Total Seating Capacity: " + QString::number(db.seatingSum()));
+    //PROCESSING - used for formating total seating capacity
+    QLocale l = QLocale::system();
+    ui->SeatingCapDispLabel->setText("Total Seating Capacity: " + l.toString(db.seatingSum()));
 
 }
 
+/**
+ * @brief MainWindow::fillAdminTeamTable
+ */
 void MainWindow::fillAdminTeamTable()
 {
     ClearTable(ui->TeamsAdminTable);
@@ -674,8 +684,3 @@ void MainWindow::on_InfoTeamCombobox_currentIndexChanged(const QString &arg1)
     }
 }
 
-
-void MainWindow::on_testButton_clicked()
-{
-    qDebug() << db.seatingSum();
-}

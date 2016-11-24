@@ -55,7 +55,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="Welcome_tab">
        <attribute name="title">
@@ -64,10 +64,10 @@
        <widget class="QLabel" name="label">
         <property name="geometry">
          <rect>
-          <x>250</x>
-          <y>20</y>
-          <width>541</width>
-          <height>371</height>
+          <x>0</x>
+          <y>0</y>
+          <width>1011</width>
+          <height>531</height>
          </rect>
         </property>
         <property name="text">
@@ -78,19 +78,6 @@
         </property>
         <property name="scaledContents">
          <bool>true</bool>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="testButton">
-        <property name="geometry">
-         <rect>
-          <x>50</x>
-          <y>190</y>
-          <width>75</width>
-          <height>23</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>PushButton</string>
         </property>
        </widget>
       </widget>
@@ -169,18 +156,21 @@
        <widget class="QComboBox" name="InfoTeamCombobox">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>20</x>
           <y>80</y>
-          <width>181</width>
-          <height>22</height>
+          <width>251</width>
+          <height>61</height>
          </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">font: 15pt &quot;MS Shell Dlg 2&quot;;</string>
         </property>
        </widget>
        <widget class="QLabel" name="SeatingCapDispLabel">
         <property name="geometry">
          <rect>
-          <x>30</x>
-          <y>310</y>
+          <x>20</x>
+          <y>380</y>
           <width>361</width>
           <height>61</height>
          </rect>
@@ -198,7 +188,7 @@
           <x>290</x>
           <y>20</y>
           <width>691</width>
-          <height>241</height>
+          <height>301</height>
          </rect>
         </property>
         <property name="font">
@@ -250,6 +240,26 @@
           <string>Star Player</string>
          </property>
         </row>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="trips_tab">
+       <attribute name="title">
+        <string>Trip</string>
+       </attribute>
+       <widget class="QStackedWidget" name="TripsWidget">
+        <property name="geometry">
+         <rect>
+          <x>10</x>
+          <y>10</y>
+          <width>981</width>
+          <height>491</height>
+         </rect>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="page"/>
+        <widget class="QWidget" name="page_2"/>
        </widget>
       </widget>
      </widget>

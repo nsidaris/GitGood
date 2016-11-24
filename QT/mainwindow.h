@@ -7,6 +7,7 @@
 #include "login.h"
 #include<QMessageBox>
 #include <QStringList>
+#include <QLocale>
 
 namespace Ui {
 class MainWindow;
@@ -55,8 +56,6 @@ private slots:
     void on_updateStadNutton_clicked();
 
     void on_InfoTeamCombobox_currentIndexChanged(const QString &arg1);
-
-    void on_testButton_clicked();
 
 private:
 
