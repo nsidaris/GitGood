@@ -23,6 +23,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     fillAdminTeamTable(); //fill up the admin team table
 
+    ui->label_NewSeatCap->hide();
+    ui->label_NewStadium->hide();
+    ui->comboBox_UpdateTeam->hide();
+    ui->AdminStadiumUpdateIn->hide();
+    ui->spinBox_SeatCap->hide();
+    ui->label_SelectTeam->hide();
+    ui->updateStadNutton->hide();
+
+    ui->spinBox_SeatCap->setMaximum(100000);
 
 }
 
@@ -67,12 +76,12 @@ void::MainWindow::fillTeamComboBoxs()
 {
     ui->InfoTeamCombobox->clear();
     ui->AdminTeamSouvCombo->clear(); //clear it out, this way Las Vegas will be in the correct spot alphabetically
-     ui->AdminTeamSouvCombo_2->clear();
+     ui->comboBox_UpdateTeam->clear();
     QVector<QString> teams = db.GetAllTeams();
     for(int i = 0; i < teams.size(); i++)
     {
         ui->AdminTeamSouvCombo->addItem(teams[i]);
-        ui->AdminTeamSouvCombo_2->addItem(teams[i]);
+        ui->comboBox_UpdateTeam->addItem(teams[i]);
         ui->InfoTeamCombobox->addItem(teams[i]);
 
     }
@@ -581,17 +590,26 @@ void MainWindow::on_AdminItemCombo_currentTextChanged(const QString &arg1)
 //update stadium names
 void MainWindow::on_updateStadNutton_clicked()
 {
-    QString team = ui->AdminTeamSouvCombo_2->currentText();
-    QString newName = ui->AdminStadiumUpdateIn->text().trimmed();
+    QString team       = ui->comboBox_UpdateTeam->currentText();
+    QString newName    = ui->AdminStadiumUpdateIn->text().trimmed();
+    double     newSeatCap = ui->spinBox_SeatCap->value();
 
     if(!newName.isEmpty())
     {
-        if(db.updateStadium(team, newName))
+        if(db.updateStadium(team, newName) && db.updateSeatCap(team, newSeatCap))///////////////////////////////////////////////////////////////////////////
         {
             fillAdminTeamTable();
             ui->AdminStadiumUpdateIn->clear();
             QMessageBox::information(this, tr("Success!"),
                        team + " is now located at " + newName);
+
+            ui->label_NewSeatCap->hide();
+            ui->label_NewStadium->hide();
+            ui->comboBox_UpdateTeam->hide();
+            ui->AdminStadiumUpdateIn->hide();
+            ui->spinBox_SeatCap->hide();
+            ui->label_SelectTeam->hide();
+            ui->updateStadNutton->hide();
         }
     }
     else
@@ -684,3 +702,15 @@ void MainWindow::on_InfoTeamCombobox_currentIndexChanged(const QString &arg1)
     }
 }
 
+
+void MainWindow::on_ChangeTeamInfo_Button_clicked()
+{
+    ui->label_NewSeatCap->show();
+    ui->label_NewStadium->show();
+    ui->comboBox_UpdateTeam->show();
+    ui->AdminStadiumUpdateIn->show();
+    ui->spinBox_SeatCap->show();
+    ui->label_SelectTeam->show();
+    ui->updateStadNutton->show();
+
+}

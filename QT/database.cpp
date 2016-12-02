@@ -15,6 +15,7 @@ Database::Database()
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("../Database/football.db");
 
+
     if(!db.open())
         qDebug() << "Not connected to DB.";
     else if(db.open())
@@ -500,9 +501,12 @@ bool Database::updateStadium(QString team, QString newStadium)
 {
     QSqlQuery query(db);
     query.prepare("UPDATE STADIUM SET STADIUM_NAME = (:newStad) WHERE TEAM_NAME = (:team)");
-
     query.bindValue(":newStad", newStadium);
     query.bindValue(":team", team);
+
+
+
+
     if(query.exec())
     {
         return true;
@@ -514,6 +518,28 @@ bool Database::updateStadium(QString team, QString newStadium)
 
     return false;
 
+}
+
+bool::Database::updateSeatCap(QString team, int newSeatCap)
+{
+    QSqlQuery query(db);
+
+    query.prepare("UPDATE STADIUM SET SEATING_CAP = (:newSeat) WHERE TEAM_NAME = (:team)");/////////////////////////////////
+
+    query.bindValue(":newSeat", newSeatCap);
+    query.bindValue(":team", team);
+
+
+    if(query.exec())
+    {
+        return true;
+    }
+    else
+    {
+        qDebug() << query.lastError();
+    }
+
+    return false;
 }
 
 /**

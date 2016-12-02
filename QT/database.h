@@ -183,6 +183,14 @@ public:
      * \param player
      */
 
+    /*!
+     * \brief updateSeatCap
+     * \param team
+     * \param newSeatCap
+     * \return
+     */
+    bool updateSeatCap(QString team, int newSeatCap) ;
+
     void GetAllTeamInfo(QVector<QString> &name, QVector<QString> &stadium, QVector<double> &seating,
                         QVector<QString> &location, QVector<QString> &conference,
                         QVector<QString> &surface, QVector<QString> &roof, QVector<QString> &player);
