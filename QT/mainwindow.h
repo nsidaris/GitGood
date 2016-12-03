@@ -9,6 +9,7 @@
 #include <QStringList>
 #include <QLocale>
 #include <QMap>
+#include <QList>
 
 namespace Ui {
 class MainWindow;
@@ -101,7 +102,7 @@ private:
      */
     bool isLoggedIn; //determines whether or not an admin is logged in
     int nextStadiumClicked;
-    QMap <QString, QMap<QString, double > > souvenirs;
+    QMap <QString, QMap<QString, int > > souvenirs;
     //-----------------------------------------------------------
 
 };

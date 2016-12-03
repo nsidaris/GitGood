@@ -703,7 +703,9 @@ void MainWindow::on_InfoTeamCombobox_currentIndexChanged(const QString &arg1)
     }
 }
 
-
+/**
+ * @brief MainWindow::on_ChangeTeamInfo_Button_clicked
+ */
 void MainWindow::on_ChangeTeamInfo_Button_clicked()
 {
     ui->label_NewSeatCap->show();
@@ -716,9 +718,11 @@ void MainWindow::on_ChangeTeamInfo_Button_clicked()
 
 }
 
+/**
+ * @brief MainWindow::on_NextStadium_Button_clicked
+ */
 void MainWindow::on_NextStadium_Button_clicked()
 {
-    nextStadiumClicked++;
 
     QVector<QString> name;
     QVector<QString> stadium;
@@ -729,7 +733,38 @@ void MainWindow::on_NextStadium_Button_clicked()
     QVector<QString> roof;
     QVector<QString> player;
     db.GetAllTeamInfo(name, stadium, seating, location, conference, surface, roof, player);
+    QMap<QString, int> temp;    //CALC - stores what was bought from each stadium
 
+    //Stores the items purchased and resets the labels ONLY WHEN nextStadiumClicked is less than size of names vector
+    if(nextStadiumClicked >= 0)
+    {
+        //Saves menu items from previous selection
+        int rows = ui->SouvenirsTable->rowCount();
+
+        //Stores items purchased into temp vector only when 1 or more items is purchased
+        for(int i = 0; i < rows; i++)
+        {
+            int quantity = static_cast<QDoubleSpinBox*>(ui->SouvenirsTable->cellWidget(i,2))->value();
+            QString item = ui->SouvenirsTable->item(i,0)->text();
+
+            if(quantity > 0)
+            {
+                temp.insert(item,quantity);
+            }
+        }
+        qDebug() << temp;
+
+        //Adds itemps purchased along with the team name to souvenirs map
+        if(temp.size() > 0)
+        {
+            souvenirs.insert(name[nextStadiumClicked],temp);
+        }
+    }
+
+    //Updates next stadium clicked
+    nextStadiumClicked++;
+
+    //Resets all labels and menu to new stadium
     if(nextStadiumClicked < name.size())
     {
 
@@ -743,46 +778,62 @@ void MainWindow::on_NextStadium_Button_clicked()
         ui->TeamNameTrip_label->setText(name[nextStadiumClicked]);
         ui->StadiumTrip_Label->setText(stadium[nextStadiumClicked]);
 
-        /*
-        //Fills souvenirs menu
+
+        //Clears table and temp map
+        ClearTable(ui->SouvenirsTable);
+        temp.clear();
+
         QVector<QString> items;
         QVector<double> prices;
         db.GetSouvenirs(items, prices, name[nextStadiumClicked]);
-        ui->Helmet_Price->setText(prices[0]);
+
+        /* sets header for souvenir table
+         * colum 1 - Items
+         * colum 2 - Prices
+         */
+        ui->SouvenirsTable->insertColumn(0);
+        ui->SouvenirsTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Item"));
+        ui->SouvenirsTable->insertColumn(1);
+        ui->SouvenirsTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Price"));
+        ui->SouvenirsTable->insertColumn(1);
+        ui->SouvenirsTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Quantity"));
+
+        /* inserts the teams souvenirs along with their prices tothe table */
+        for(int i = 0; i < items.size(); i++)
+        {
+            ui->SouvenirsTable->insertRow(i);
+            ui->SouvenirsTable->setItem(i,0,new QTableWidgetItem(items[i]));
+            ui->SouvenirsTable->setItem(i,1, new QTableWidgetItem(QString::number(prices[i])));
+            ui->SouvenirsTable->setCellWidget(i,2, new QSpinBox);
+        }
+
+        //PROCESSING - resizes rows and columns of table
+        ui->SouvenirsTable->resizeColumnsToContents();
+        ui->SouvenirsTable->resizeRowsToContents();
+        ui->SouvenirsTable->horizontalHeader()->setStretchLastSection(true);
 
 
-
-        //Gets infor from combo box and saves items bought to vectors
-        QMap<QString, int> temp;
-        temp.insert(ui->helmet_label->text(), ui->Helmet_spinBox->value());
-        */
     }
     else
     {
+        //Sets current index of stack widget and resets next stadium clicked
         ui->TripsWidget->setCurrentIndex(2);
-
-
+        nextStadiumClicked = -1;
+        qDebug() << souvenirs;
     }
 
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * @brief MainWindow::on_VisitAll_Button_clicked
+ */
 void MainWindow::on_VisitAll_Button_clicked()
 {
+    //Sets index to trip apge
     ui->TripsWidget->setCurrentIndex(1);
 
+    //Increments next stadium clicked
     nextStadiumClicked++;
     QVector<QString> name;
     QVector<QString> stadium;
@@ -793,6 +844,38 @@ void MainWindow::on_VisitAll_Button_clicked()
     QVector<QString> roof;
     QVector<QString> player;
     db.GetAllTeamInfo(name, stadium, seating, location, conference, surface, roof, player);
+
+    //Clears souvenirs table
+    ClearTable(ui->SouvenirsTable);
+
+    QVector<QString> items;
+    QVector<double> prices;
+    db.GetSouvenirs(items, prices, name[nextStadiumClicked]);
+
+    /* sets header for souvenir table
+     * colum 1 - Items
+     * colum 2 - Prices
+     */
+    ui->SouvenirsTable->insertColumn(0);
+    ui->SouvenirsTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Item"));
+    ui->SouvenirsTable->insertColumn(1);
+    ui->SouvenirsTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Price"));
+    ui->SouvenirsTable->insertColumn(1);
+    ui->SouvenirsTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Quantity"));
+
+    /* inserts the teams souvenirs along with their prices tothe table */
+    for(int i = 0; i < items.size(); i++)
+    {
+        ui->SouvenirsTable->insertRow(i);
+        ui->SouvenirsTable->setItem(i,0,new QTableWidgetItem(items[i]));
+        ui->SouvenirsTable->setItem(i,1, new QTableWidgetItem(QString::number(prices[i])));
+        ui->SouvenirsTable->setCellWidget(i,2, new QSpinBox);
+    }
+
+    //PROCESSING - resizes rows and columns of table
+    ui->SouvenirsTable->resizeColumnsToContents();
+    ui->SouvenirsTable->resizeRowsToContents();
+    ui->SouvenirsTable->horizontalHeader()->setStretchLastSection(true);
 
 
     //Sets labels according to stadium user is at
