@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>NFL-Shield.jpg</file>
+        <file>Teams.png</file>
     </qresource>
 </RCC>

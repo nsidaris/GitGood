@@ -13,7 +13,7 @@
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../Database/football.db");
+    db.setDatabaseName("football.db");
 
 
     if(!db.open())

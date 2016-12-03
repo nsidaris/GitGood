@@ -8,6 +8,7 @@
 #include<QMessageBox>
 #include <QStringList>
 #include <QLocale>
+#include <QMap>
 
 namespace Ui {
 class MainWindow;
@@ -59,6 +60,11 @@ private slots:
 
     void on_ChangeTeamInfo_Button_clicked();
 
+
+    void on_NextStadium_Button_clicked();
+
+    void on_VisitAll_Button_clicked();
+
 private:
 
     Ui::MainWindow *ui; //mainwindow
@@ -94,6 +100,8 @@ private:
      * VARIABLES
      */
     bool isLoggedIn; //determines whether or not an admin is logged in
+    int nextStadiumClicked;
+    QMap <QString, QMap<QString, double > > souvenirs;
     //-----------------------------------------------------------
 
 };

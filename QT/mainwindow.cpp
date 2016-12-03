@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->spinBox_SeatCap->setMaximum(100000);
 
+    nextStadiumClicked = -1;
 }
 
 MainWindow::~MainWindow()
@@ -713,4 +714,94 @@ void MainWindow::on_ChangeTeamInfo_Button_clicked()
     ui->label_SelectTeam->show();
     ui->updateStadNutton->show();
 
+}
+
+void MainWindow::on_NextStadium_Button_clicked()
+{
+    nextStadiumClicked++;
+
+    QVector<QString> name;
+    QVector<QString> stadium;
+    QVector<double> seating;
+    QVector<QString> location;
+    QVector<QString> conference;
+    QVector<QString> surface;
+    QVector<QString> roof;
+    QVector<QString> player;
+    db.GetAllTeamInfo(name, stadium, seating, location, conference, surface, roof, player);
+
+    if(nextStadiumClicked < name.size())
+    {
+
+        //Sets labels according to stadium user is at
+        ui->LocationTrip_label->setText(location[nextStadiumClicked]);
+        ui->SeatingCapTrip_Label->setText(QString::number(seating[nextStadiumClicked]));
+        ui->ConferenceTrip_label->setText(conference[nextStadiumClicked]);
+        ui->surfaceTrip_label->setText(surface[nextStadiumClicked]);
+        ui->RoofTrip_Llabel->setText(roof[nextStadiumClicked]);
+        ui->StarTrip_Label->setText(player[nextStadiumClicked]);
+        ui->TeamNameTrip_label->setText(name[nextStadiumClicked]);
+        ui->StadiumTrip_Label->setText(stadium[nextStadiumClicked]);
+
+        /*
+        //Fills souvenirs menu
+        QVector<QString> items;
+        QVector<double> prices;
+        db.GetSouvenirs(items, prices, name[nextStadiumClicked]);
+        ui->Helmet_Price->setText(prices[0]);
+
+
+
+        //Gets infor from combo box and saves items bought to vectors
+        QMap<QString, int> temp;
+        temp.insert(ui->helmet_label->text(), ui->Helmet_spinBox->value());
+        */
+    }
+    else
+    {
+        ui->TripsWidget->setCurrentIndex(2);
+
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void MainWindow::on_VisitAll_Button_clicked()
+{
+    ui->TripsWidget->setCurrentIndex(1);
+
+    nextStadiumClicked++;
+    QVector<QString> name;
+    QVector<QString> stadium;
+    QVector<double> seating;
+    QVector<QString> location;
+    QVector<QString> conference;
+    QVector<QString> surface;
+    QVector<QString> roof;
+    QVector<QString> player;
+    db.GetAllTeamInfo(name, stadium, seating, location, conference, surface, roof, player);
+
+
+    //Sets labels according to stadium user is at
+    ui->LocationTrip_label->setText(location[nextStadiumClicked]);
+    ui->SeatingCapTrip_Label->setText(QString::number(seating[nextStadiumClicked]));
+    ui->ConferenceTrip_label->setText(conference[nextStadiumClicked]);
+    ui->surfaceTrip_label->setText(surface[nextStadiumClicked]);
+    ui->RoofTrip_Llabel->setText(roof[nextStadiumClicked]);
+    ui->StarTrip_Label->setText(player[nextStadiumClicked]);
+    ui->TeamNameTrip_label->setText(name[nextStadiumClicked]);
+    ui->StadiumTrip_Label->setText(stadium[nextStadiumClicked]);
 }
