@@ -13,7 +13,7 @@
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(".../Database/football.db");
+    db.setDatabaseName("../Database/football.db");
 
 
     if(!db.open())
@@ -634,4 +634,71 @@ int Database::seatingSum()
     }
     return sum;
 
+}
+
+
+void Database::getNodes(QVector<int> &start, QVector<int> &end, QVector<int> &dist)
+{
+     QSqlQuery query(db);//CALC - variable to access database
+
+     query.prepare("SELECT * FROM node");
+
+
+     if(query.exec())
+     {
+            while(query.next())
+            {
+                start.push_back(query.value(0).toInt()); //a
+                end.push_back(query.value(1).toInt());   //b
+                dist.push_back(query.value(2).toInt());  //dist
+            }
+     }
+     else
+     {
+         qDebug() << query.lastError();
+     }
+
+
+
+
+}
+int Database::getCount()
+{
+    QSqlQuery query(db);//CALC - variable to access database
+
+    query.prepare("SELECT count(*) FROM STADIUM");
+
+    if(query.exec())
+    {
+        if(query.next())
+        {
+            return query.value(0).toInt();
+        }
+    }
+    else
+    {
+        qDebug() << query.lastError();
+    }
+    return 0;
+
+}
+void Database::getTeamsAndStadiums(QVector<QString> &stadium,QVector<QString> &name )
+
+{
+    QSqlQuery query(db);
+    query.prepare("SELECT STADIUM_NAME, TEAM_NAME FROM STADIUM");
+
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            stadium.push_back(query.value(0).toString());
+            name.push_back(query.value(1).toString());
+        }
+    }
+    else
+    {
+         qDebug()<< query.lastError();
+    }
 }

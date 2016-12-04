@@ -10,6 +10,8 @@
 #include <QLocale>
 #include <QMap>
 #include <QList>
+#include "Graph.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -66,6 +68,8 @@ private slots:
 
     void on_VisitAll_Button_clicked();
 
+    void on_TestButton_clicked();
+
 private:
 
     Ui::MainWindow *ui; //mainwindow
@@ -87,7 +91,20 @@ private:
      */
     void fillTeamComboBoxs(); //fill all team combo boxes up
 
+    /*!
+     * \brief fillAdminTeamTable
+     */
     void fillAdminTeamTable();//fill team table in admin tab
+
+
+    /*!
+     * \brief fillGraph
+     * Fills the graph object up
+     */
+    void fillGraph();
+
+    //add method to fill MST GUI once it is implemented
+
 
     //-----------------------------------------------------------
     /*
@@ -95,6 +112,7 @@ private:
      */
      Login logWindow; //instance of the login window
       Database db;    //instance of the database class
+      Graph graph;    //the adjacency matrix graph
 
     //-----------------------------------------------------------
     /*
@@ -103,6 +121,12 @@ private:
     bool isLoggedIn; //determines whether or not an admin is logged in
     int nextStadiumClicked;
     QMap <QString, QMap<QString, int > > souvenirs;
+
+
+    QVector<QString>masterTeamNameList; //list of teams in default db order
+    QVector<QString>masterStadiumList; //list of all stadiums
+
+
     //-----------------------------------------------------------
 
 };

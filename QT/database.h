@@ -191,6 +191,17 @@ public:
      */
     bool updateSeatCap(QString team, int newSeatCap) ;
 
+    /*!
+     * \brief GetAllTeamInfo
+     * \param name
+     * \param stadium
+     * \param seating
+     * \param location
+     * \param conference
+     * \param surface
+     * \param roof
+     * \param player
+     */
     void GetAllTeamInfo(QVector<QString> &name, QVector<QString> &stadium, QVector<double> &seating,
                         QVector<QString> &location, QVector<QString> &conference,
                         QVector<QString> &surface, QVector<QString> &roof, QVector<QString> &player);
@@ -200,6 +211,28 @@ public:
      * \return
      */
     int seatingSum();
+
+    /*!
+     * \brief getNodes
+     * \param start
+     * \param end
+     * \param dist
+     */
+    void getNodes(QVector<int> &start, QVector<int> &end, QVector<int> &dist);
+
+    /*!
+     * \brief getCount
+     * \return
+     */
+    int getCount();
+
+
+    /*!
+     * \brief getTeam
+     * \param stadium
+     * \param name
+     */
+    void getTeamsAndStadiums(QVector<QString> &stadium,QVector<QString> &name );
 
 
 protected:

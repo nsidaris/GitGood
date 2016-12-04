@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->usersTab->setCurrentIndex(0); //set to home page in users tab
     isLoggedIn = false; //set logged in to false
     on_comboBox_TeamInfo_currentIndexChanged(0); //have information filled w/ option 1 on startup
-   fillTeamComboBoxs(); //fill the team combo box in the souvenir tab in the admin area
+    fillTeamComboBoxs(); //fill the team combo box in the souvenir tab in the admin area
 
     fillAdminTeamTable(); //fill up the admin team table
 
@@ -34,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->spinBox_SeatCap->setMaximum(100000);
 
     nextStadiumClicked = -1;
+    fillGraph();
 }
 
 MainWindow::~MainWindow()
@@ -53,7 +54,7 @@ void MainWindow::ClearTable(QTableWidget *table)
     int row = table->rowCount();
     int col = table->columnCount();
 
-   // ui->Information_Table->horizontalHeader()->setStretchLastSection(false);
+    // ui->Information_Table->horizontalHeader()->setStretchLastSection(false);
 
     //PROCESSING - removes all rows from table
     for(int i = 0; i < row; i++)
@@ -77,7 +78,7 @@ void::MainWindow::fillTeamComboBoxs()
 {
     ui->InfoTeamCombobox->clear();
     ui->AdminTeamSouvCombo->clear(); //clear it out, this way Las Vegas will be in the correct spot alphabetically
-     ui->comboBox_UpdateTeam->clear();
+    ui->comboBox_UpdateTeam->clear();
     QVector<QString> teams = db.GetAllTeams();
     for(int i = 0; i < teams.size(); i++)
     {
@@ -130,6 +131,23 @@ void MainWindow::fillAdminTeamTable()
     ui->TeamsAdminTable->resizeRowsToContents();
     ui->TeamsAdminTable->horizontalHeader()->setStretchLastSection(true);
 
+}
+
+
+void MainWindow::fillGraph()
+{
+
+    db.getTeamsAndStadiums(masterTeamNameList, masterStadiumList);
+
+
+    int size;
+    QVector<int> start;
+    QVector<int> end;
+    QVector<int> dist;
+
+
+    db.getNodes(start, end, dist);
+    graph.fill(db.getCount(), start, end, dist);
 }
 
 
@@ -502,13 +520,13 @@ void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)
 
     for(int i = 0; i < names.size(); i++)
     {
-       ui->AdminSouvTable->insertRow(i);
-       ui->AdminSouvTable->setItem(i,0,new QTableWidgetItem(names[i]));
-       ui->AdminItemCombo->addItem(names[i]);
-       ui->AdminSouvTable->setItem(i,1,new QTableWidgetItem(QString::number(prices[i], 'f', 2)));
+        ui->AdminSouvTable->insertRow(i);
+        ui->AdminSouvTable->setItem(i,0,new QTableWidgetItem(names[i]));
+        ui->AdminItemCombo->addItem(names[i]);
+        ui->AdminSouvTable->setItem(i,1,new QTableWidgetItem(QString::number(prices[i], 'f', 2)));
     }
-   ui->AdminSouvTable->resizeColumnsToContents();
-   ui->AdminSouvTable->resizeRowsToContents();
+    ui->AdminSouvTable->resizeColumnsToContents();
+    ui->AdminSouvTable->resizeRowsToContents();
     ui->AdminSouvTable->horizontalHeader()->setStretchLastSection(true);
 
 }
@@ -573,7 +591,7 @@ void MainWindow::on_AdminUpdateSouv_clicked()
     {
         on_AdminTeamSouvCombo_currentTextChanged(ui->AdminTeamSouvCombo->currentText()); //update the item table
         QMessageBox::information(this, tr("Success!"),
-                   "Price for: " + item + " updated");
+                                 "Price for: " + item + " updated");
     }
 }
 //fills the double combo box for price update to the price of the item selected
@@ -602,7 +620,7 @@ void MainWindow::on_updateStadNutton_clicked()
             fillAdminTeamTable();
             ui->AdminStadiumUpdateIn->clear();
             QMessageBox::information(this, tr("Success!"),
-                       team + " is now located at " + newName);
+                                     team + " is now located at " + newName);
 
             ui->label_NewSeatCap->hide();
             ui->label_NewStadium->hide();
@@ -834,7 +852,7 @@ void MainWindow::on_VisitAll_Button_clicked()
     ui->TripsWidget->setCurrentIndex(1);
 
     //Increments next stadium clicked
-    nextStadiumClicked++;
+    nextStadiumClicked++; //sets it to 0
     QVector<QString> name;
     QVector<QString> stadium;
     QVector<double> seating;
@@ -888,3 +906,84 @@ void MainWindow::on_VisitAll_Button_clicked()
     ui->TeamNameTrip_label->setText(name[nextStadiumClicked]);
     ui->StadiumTrip_Label->setText(stadium[nextStadiumClicked]);
 }
+
+
+
+
+//test button, will be removed once no longer needed
+//Tests the MST and dijkstra
+void MainWindow::on_TestButton_clicked()
+{
+
+    //
+    //   fillGraph();
+    vector<int> dist;
+    vector<int> dijkstraList;
+
+    graph.Dijkstra(15, dist, dijkstraList);
+
+
+
+    qDebug() << "Le Dijkstra";
+    for(int i = 0; i < dist.size(); i++ )
+    {
+        qDebug() << masterTeamNameList[dijkstraList[i]] << "(" << masterStadiumList[dijkstraList[i]] <<")" "->" << dist[i];
+    }
+
+    int distanceTot;
+    QVector<int> first;
+    QVector<int> second;
+    QVector<int> dist2;
+    graph.MST(distanceTot, first, second, dist2);
+
+    qDebug() << "MST Stuff";
+
+
+    for(int i = 1; i < first.size(); i++)
+    {
+        qDebug() << masterStadiumList[first[i]] << "--" << masterStadiumList[second[i]] << "->" << dist2[i];
+    }
+
+
+
+
+}
+
+//SAVE THIS PLEASE
+
+/*
+ *   vector<int> dist;
+    vector<int> dijkstraList;
+
+    graph.Dijkstra(15, dist, dijkstraList);
+
+
+
+    qDebug() << "Le Dijkstra";
+    for(int i = 0; i < dist.size(); i++ )
+    {
+        qDebug() << masterTeamNameList[dijkstraList[i]] << "(" << masterStadiumList[dijkstraList[i]] <<")" "->" << dist[i];
+    }
+
+    int distanceTot;
+    QVector<int> first;
+    QVector<int> second;
+    QVector<int> dist2;
+    graph.MST(distanceTot, first, second, dist2);
+
+    qDebug() << "MST Stuff";
+
+
+    for(int i = 1; i < first.size(); i++)
+    {
+        qDebug() << masterStadiumList[first[i]] << "--" << masterStadiumList[second[i]] << "->" << dist2[i];
+    }
+
+
+
+ *
+ *
+ *
+ *
+ *
+ */
