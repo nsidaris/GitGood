@@ -14,6 +14,7 @@
 #include <QRadioButton>
 #include <QGridLayout>
 #include "Graph.h"
+#include "Map.h"
 
 
 namespace Ui {
@@ -141,7 +142,7 @@ private:
      */
     bool isLoggedIn; //determines whether or not an admin is logged in
     int nextStadiumClicked;
-    QMap <QString, QMap<QString, int > > souvenirs;
+    QMap <QString, Map > souvenirs;
 
 
     QVector<QString>masterTeamNameList; //list of teams in default db order
@@ -152,6 +153,7 @@ private:
        QVector<int> dist;
         QVector<int> customList;
         QVector<int> customDist;
+        double totalDistance;
 
 
     //-----------------------------------------------------------

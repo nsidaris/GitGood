@@ -38,6 +38,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     refreshMST(); //fill up the mst info tab
+
+    totalDistance = 0;
 }
 
 MainWindow::~MainWindow()
@@ -839,7 +841,7 @@ void MainWindow::on_ChangeTeamInfo_Button_clicked()
 void MainWindow::on_NextStadium_Button_clicked()
 {
 
-    QMap<QString, int> temp;    //CALC - stores what was bought from each stadium
+    Map temp;    //CALC - stores what was bought from each stadium
 
     //Stores the items purchased and resets the labels ONLY WHEN nextStadiumClicked is less than size of names vector
     if(nextStadiumClicked >= 0)
@@ -858,12 +860,11 @@ void MainWindow::on_NextStadium_Button_clicked()
                 temp.insert(item,quantity);
             }
         }
-        qDebug() << temp;
 
         //Adds itemps purchased along with the team name to souvenirs map
         if(temp.size() > 0)
         {
-            //souvenirs.insert(name[nextStadiumClicked],temp);
+            souvenirs.insert(masterTeamNameList[dijkstraList[nextStadiumClicked]],temp);
         }
     }
 
@@ -881,10 +882,75 @@ void MainWindow::on_NextStadium_Button_clicked()
         //Sets current index of stack widget and resets next stadium clicked
         ui->TripsWidget->setCurrentIndex(2);
         nextStadiumClicked = -1;
-        qDebug() << souvenirs;
+
+        ClearTable(ui->TotalSpentTable);
+
+        //fill up the table
+        ui->TotalSpentTable->insertColumn(0);
+        ui->TotalSpentTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Team Name"));
+        ui->TotalSpentTable->insertColumn(1);
+        ui->TotalSpentTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Item Bought"));
+        ui->TotalSpentTable->insertColumn(2);
+        ui->TotalSpentTable->setHorizontalHeaderItem(2, new QTableWidgetItem("Quantity"));
+        ui->TotalSpentTable->insertColumn(3);
+        ui->TotalSpentTable->setHorizontalHeaderItem(3, new QTableWidgetItem("Price"));
+        ui->TotalSpentTable->insertColumn(4);
+        ui->TotalSpentTable->setHorizontalHeaderItem(4, new QTableWidgetItem("Total"));
+
+        int row = 0;
+        int i = 0;
+        double totalSpent = 0;
+
+        while( i < souvenirs.size())
+        {
+            ui->TotalSpentTable->insertRow(row);
+            ui->TotalSpentTable->setItem(row,0,new QTableWidgetItem(souvenirs.keys()[i]));
+
+            for(int j = 0; j < souvenirs[souvenirs.keys()[i]].size(); j++)
+            {
+                double price = db.getItemPrice(souvenirs.keys()[i],souvenirs[souvenirs.keys()[i]].GetList()[j].key);
+                int quantity = souvenirs[souvenirs.keys()[i]].GetList()[j].value;
+                totalSpent += price * quantity;
+
+
+                ui->TotalSpentTable->setItem(row,1,new QTableWidgetItem(souvenirs[souvenirs.keys()[i]].GetList()[j].key));
+                ui->TotalSpentTable->setItem(row,2,new QTableWidgetItem(QString::number(quantity)));
+                ui->TotalSpentTable->setItem(row,3,new QTableWidgetItem(QString::number(price, 'f', 2)));
+                ui->TotalSpentTable->setItem(row,4,new QTableWidgetItem(QString::number(price * quantity, 'f', 2)));
+                row++;
+                ui->TotalSpentTable->insertRow(row);
+            }
+
+            ui->TotalSpentTable->removeRow(row);
+
+        i++;
+        }
+
+        ui->TotalSpentTable->resizeColumnsToContents();
+        ui->TotalSpentTable->resizeRowsToContents();
+        ui->TotalSpentTable->horizontalHeader()->setStretchLastSection(true);
+
+        ui->GrandTotalLabel->setText(QString::number(totalSpent));
+
+
+
+
+//        qDebug() << souvenirs.size();
+
+//        for(int i = 0; i < souvenirs.size(); i++)
+//        {
+//           qDebug() << c;
+//           for(int j = 0; j < souvenirs[souvenirs.keys()[i]].size(); j++)
+//           {
+//               qDebug() << "\t" << souvenirs[souvenirs.keys()[i]].GetList()[j].key
+//                        << souvenirs[souvenirs.keys()[i]].GetList()[j].value;
+//           }
+//        }
+
     }
 
 }
+
 
 
 /**
@@ -1043,14 +1109,11 @@ void MainWindow::on_buttonBox_rejected()
 
 void MainWindow::on_buttonBox_accepted()
 {
-    qDebug() << "Begin";
-
-    ui->TripsWidget->setCurrentIndex(1);
     QVector<QString> teams = db.GetAllTeams();
     QVector<QString> selected;
     QVector<int> teamNumbers;
     int startNumber;
-    QString start;
+    QString start = "";
 
     for(int i = 0; i < checkboxList.size(); i++)
     {
@@ -1070,56 +1133,65 @@ void MainWindow::on_buttonBox_accepted()
         }
     }
 
-qDebug() << "start " << start;
-    teamNumbers = db.TeamNamesToNodes(selected);
-    startNumber = db.GetTeamNumber(start);
-
-    qDebug() << "startNumber " << startNumber;
-
-    dijkstraList.clear();
-    dist.clear();
-    customList.clear();
-    customDist.clear();
-    qDebug() << "after all clear";
-
-    graph.Dijkstra(startNumber - 1,dist,dijkstraList);
-qDebug() << "after dijkstra";
-
-    for(int i = 0; i < dijkstraList.size(); i++)
+    if(selected.size() == 0)
     {
-        for(int j = 0; j < teamNumbers.size(); j++)
+        QMessageBox::information(this, tr("No Boxes checked"),
+                                 "Please check at least one box to start the trip");
+    }
+    else if(start == "")
+    {
+        QMessageBox::information(this, tr("No Starting Team"),
+                                 "Please choose a team to start at");
+    }
+    else
+    {
+        ui->TripsWidget->setCurrentIndex(1);
+        teamNumbers = db.TeamNamesToNodes(selected);
+        startNumber = db.GetTeamNumber(start);
+
+        dijkstraList.clear();
+        dist.clear();
+        customList.clear();
+        customDist.clear();
+
+
+        graph.Dijkstra(startNumber - 1,dist,dijkstraList);
+
+        for(int i = 0; i < dijkstraList.size(); i++)
         {
-            if(dijkstraList[i] + 1 == teamNumbers[j])
+            for(int j = 0; j < teamNumbers.size(); j++)
             {
-                customList.push_back(dijkstraList[i]);
-                customDist.push_back(dist[i]);
+                if(dijkstraList[i] + 1 == teamNumbers[j])
+                {
+                    customList.push_back(dijkstraList[i]);
+                    customDist.push_back(dist[i]);
+                }
             }
         }
-    }
 
-    qDebug() << "after custom list";
-    customList.swap(dijkstraList);
-    customDist.swap(dist);
-    dijkstraList.push_front(startNumber - 1);
+        customList.swap(dijkstraList);
+        customDist.swap(dist);
+        dijkstraList.push_front(startNumber - 1);
 
-    qDebug() << "after push";
-    nextStadiumClicked = 0;
-    FillTripLabels(masterTeamNameList[dijkstraList[nextStadiumClicked]]);
+        nextStadiumClicked = 0;
+        FillTripLabels(masterTeamNameList[dijkstraList[nextStadiumClicked]]);
 
-    for(int i = 0; i < checkboxList.size(); i++)
-    {
-        checkboxList[i]->setCheckState(Qt::Unchecked);
-        radioList[i]->setChecked(false);
-    }
-
-    QLayoutItem* item =  ui->groupBox->layout()->takeAt(0) ;
-        while ( item  != 0 )
+        for(int i = 0; i < checkboxList.size(); i++)
         {
-            delete item;
-            item =  ui->groupBox->layout()->takeAt(0) ;
+            checkboxList[i]->setCheckState(Qt::Unchecked);
+            radioList[i]->setChecked(false);
         }
 
-    qDebug() << "after uncheck";
+        QLayoutItem* item =  ui->groupBox->layout()->takeAt(0) ;
+            while ( item  != 0 )
+            {
+                delete item;
+                item =  ui->groupBox->layout()->takeAt(0) ;
+            }
+
+    }//END if else if
+
+
 }
 
 void MainWindow::on_BackButton_clicked()

@@ -17,11 +17,13 @@ SOURCES += main.cpp\
     database.cpp \
     login.cpp \
     Graph.cpp \
+    Map.cpp
 
 HEADERS  += mainwindow.h \
     database.h \
     login.h \
     Graph.h \
+    Map.h
 
 FORMS    += mainwindow.ui \
     login.ui
