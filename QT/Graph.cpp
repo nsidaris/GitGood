@@ -273,12 +273,11 @@ int Graph::minDistance(QVector<int> dist, QVector<bool> sptSet)
 
 void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 {
-
+qDebug() << "Begin";
 	//vector< vector<int> > graph = mapMatrix.GetMatrix();
 
 	//vector<int> dist;
     QVector<bool> sptSet;
-
 
 	const int INTMAX = 99999;
 
@@ -289,11 +288,15 @@ void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 		dist.push_back(INTMAX);
 		sptSet.push_back(false); // = false;
 	}
+    qDebug() << "size" << size;
+
 
 
 
 	// Distance of source vertex from itself is always 0
 	dist[src] = 0;
+
+    qDebug() << "after dis and spset";
 
 	// cin.get();
 	// Find shortest path for all vertices
@@ -303,8 +306,10 @@ void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 		// yet processed. u is always equal to src in first iteration.
 		int u = minDistance(dist, sptSet);
 
+        qDebug() << "after min";
 		// Mark the picked vertex as processed
 		sptSet[u] = true;
+        qDebug() << "sptset true";
 
 		// Update dist value of the adjacent vertices of the picked vertex.
         for (int v = 0; v < size; v++)
@@ -321,7 +326,7 @@ void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 
 		}
 
-
+qDebug() << "after for";
 	}
 
 
@@ -455,10 +460,10 @@ int Graph::minKey(vector<int> key, vector<bool> mstSet)
 
 void Graph::fill(int size, QVector<int> &start, QVector<int> &end, QVector<int> &dist)
 {
-    matrix.clear(); //clear it out
+   matrix.clear();
 
     this->size = size;
-    vector<int> row;
+    QVector<int> row;
 
     for(int i = 0; i < size; i++)
     {

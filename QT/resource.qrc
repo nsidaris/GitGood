@@ -2,5 +2,38 @@
     <qresource prefix="/">
         <file>NFL-Shield.jpg</file>
         <file>Teams.png</file>
+        <file>Teams/Arizona Cardinals.jpg</file>
+        <file>Teams/Atlanta Falcons.jpg</file>
+        <file>Teams/Baltimore Ravens.jpg</file>
+        <file>Teams/Buffalo Bills.jpg</file>
+        <file>Teams/Carolina Panthers.jpg</file>
+        <file>Teams/Chicago Bears.jpg</file>
+        <file>Teams/Cincinnati Bengals.jpg</file>
+        <file>Teams/Cleveland Browns.jpg</file>
+        <file>Teams/Dallas Cowboys.jpg</file>
+        <file>Teams/Denver Broncos.jpg</file>
+        <file>Teams/Detroit Lions.jpg</file>
+        <file>Teams/Green Bay Packers.jpg</file>
+        <file>Teams/Houston Texans.jpg</file>
+        <file>Teams/Kansas City Chiefs.jpg</file>
+        <file>Teams/Las Vegas Gamblers.jpg</file>
+        <file>Teams/Miami Dolphins.jpg</file>
+        <file>Teams/New England Patriots.jpg</file>
+        <file>Teams/New Orleans Saints.jpg</file>
+        <file>Teams/New York Giants.jpg</file>
+        <file>Teams/Philadelphia Eagles.jpg</file>
+        <file>Teams/Pittsburgh Steelers.jpg</file>
+        <file>Teams/San Diego Chargers.jpg</file>
+        <file>Teams/San Francisco 49ers.jpg</file>
+        <file>Teams/Seattle Seahawks.jpg</file>
+        <file>Teams/Tampa Bay Buccaneers.jpg</file>
+        <file>Teams/Washington Redskins.jpg</file>
+        <file>Teams/Los Angeles Rams.jpg</file>
+        <file>Teams/Oakland Raiders.jpg</file>
+        <file>Teams/Minnesota Vikings.jpg</file>
+        <file>Teams/Indianapolis Colts.jpg</file>
+        <file>Teams/Tennessee Titans.jpg</file>
+        <file>Teams/Jacksonville Jaguars.jpg</file>
+        <file>Teams/New York Jets.jpg</file>
     </qresource>
 </RCC>

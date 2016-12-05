@@ -29,5 +29,6 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     resource.qrc
 
-DISTFILES +=
+DISTFILES += \
+    Teams/Minnesota Vikings.jpg
 

@@ -137,8 +137,9 @@ void MainWindow::fillAdminTeamTable()
 void MainWindow::fillGraph()
 {
 
+    masterStadiumList.clear();
+    masterTeamNameList.clear();
     db.getTeamsAndStadiums(masterStadiumList, masterTeamNameList);
-
 
     int size;
     QVector<int> start;
@@ -203,6 +204,8 @@ void MainWindow::FillTripLabels(QString name)
     ui->StarTrip_Label->setText(player);
     ui->TeamNameTrip_label->setText(name);
     ui->StadiumTrip_Label->setText(stadium);
+    ui->Team_Logo->setPixmap(":/Teams/" + name + ".jpg");
+
 }
 
 
@@ -857,8 +860,10 @@ void MainWindow::on_VisitAll_Button_clicked()
     //Increments next stadium clicked
     nextStadiumClicked++; //sets it to 0
 
+    dist.clear();
+    dijkstraList.clear();
     graph.Dijkstra(15,dist,dijkstraList);
-    qDebug() << masterTeamNameList[dijkstraList[nextStadiumClicked]];
+
     FillTripLabels(masterTeamNameList[dijkstraList[nextStadiumClicked]]);
 }
 
@@ -873,7 +878,8 @@ void MainWindow::on_TestButton_clicked()
     //
     //   fillGraph();
 
-
+    dist.clear();
+    dijkstraList.clear();
 
     graph.Dijkstra(15, dist, dijkstraList);
 
@@ -956,10 +962,6 @@ void MainWindow::on_VisitSelected_Button_clicked()
     int col = 0;
     int row = 1;
 
-    checkboxList.clear();
-    radioList.clear();
-
-
     QGridLayout *layout = new QGridLayout;
 
     QLabel *teamLabel = new QLabel("Team Name");
@@ -1003,12 +1005,7 @@ void MainWindow::on_buttonBox_rejected()
 
 void MainWindow::on_buttonBox_accepted()
 {
-    QLayoutItem* item =  ui->groupBox->layout()->takeAt(0) ;
-        while ( item  != 0 )
-        {
-            delete item;
-            item =  ui->groupBox->layout()->takeAt(0) ;
-        }
+    qDebug() << "Begin";
 
     ui->TripsWidget->setCurrentIndex(1);
     QVector<QString> teams = db.GetAllTeams();
@@ -1035,21 +1032,25 @@ void MainWindow::on_buttonBox_accepted()
         }
     }
 
-
+qDebug() << "start " << start;
     teamNumbers = db.TeamNamesToNodes(selected);
     startNumber = db.GetTeamNumber(start);
 
+    qDebug() << "startNumber " << startNumber;
+
     dijkstraList.clear();
     dist.clear();
+    customList.clear();
+    customDist.clear();
+    qDebug() << "after all clear";
 
     graph.Dijkstra(startNumber - 1,dist,dijkstraList);
-
+qDebug() << "after dijkstra";
 
     for(int i = 0; i < dijkstraList.size(); i++)
     {
         for(int j = 0; j < teamNumbers.size(); j++)
         {
-            qDebug() << dijkstraList[i] + 1 << "\t" << teamNumbers[j];
             if(dijkstraList[i] + 1 == teamNumbers[j])
             {
                 customList.push_back(dijkstraList[i]);
@@ -1058,20 +1059,33 @@ void MainWindow::on_buttonBox_accepted()
         }
     }
 
+    qDebug() << "after custom list";
     customList.swap(dijkstraList);
     customDist.swap(dist);
+    dijkstraList.push_front(startNumber - 1);
 
-    //FillTripLabels(startNumber - 1);
+    qDebug() << "after push";
+    nextStadiumClicked = 0;
+    FillTripLabels(masterTeamNameList[dijkstraList[nextStadiumClicked]]);
 
     for(int i = 0; i < checkboxList.size(); i++)
     {
         checkboxList[i]->setCheckState(Qt::Unchecked);
-        radioList[i]->setChecked(true);
+        radioList[i]->setChecked(false);
     }
 
+    QLayoutItem* item =  ui->groupBox->layout()->takeAt(0) ;
+        while ( item  != 0 )
+        {
+            delete item;
+            item =  ui->groupBox->layout()->takeAt(0) ;
+        }
+
+    qDebug() << "after uncheck";
 }
 
 void MainWindow::on_BackButton_clicked()
 {
     ui->TripsWidget->setCurrentIndex(0);
+    nextStadiumClicked = -1;
 }

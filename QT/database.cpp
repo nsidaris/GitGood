@@ -13,7 +13,7 @@
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("football.db");
+    db.setDatabaseName("../Database/football.db");
 
 
     if(!db.open())
@@ -800,8 +800,12 @@ int Database::GetTeamNumber(QString team)
     {
         while(query.next())
         {
+            qDebug() << "number" << query.value(0).toInt(0);
             num = query.value(0).toInt(0);
+
         }
+
+        qDebug() << "number" << num;
     }
     else
     {

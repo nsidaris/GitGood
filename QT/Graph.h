@@ -160,7 +160,7 @@ protected:
 private:
 
 
-	vector< vector<int> > matrix;	//CALC - contains edges of vertices
+    QVector< QVector<int> > matrix;	//CALC - contains edges of vertices
 	//AdjacencyMatrix mapMatrix; //CALC - matrix of vertices and edges
 	vector<int> visitedDFS;	   //CALC - vector of visited/unvisited nodes
 	vector<int> visitedBFS;	   //CALC - vector of visited/unvisited nodes
