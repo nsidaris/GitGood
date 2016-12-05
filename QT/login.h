@@ -2,7 +2,12 @@
 #define LOGIN_H
 
 #include <QDialog>
-
+/*!
+   * \file login.h
+   * \brief  Header for login class
+   *
+   * This file contains all of the declarations of the login class
+   */
 namespace Ui {
 class Login;
 }

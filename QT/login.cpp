@@ -3,7 +3,7 @@
 
 /*!
    * \file login.cpp
-   * \brief  Header for login class
+   * \brief  Source file for login class
    *
    * This file contains all of the definitions of the login class
    */

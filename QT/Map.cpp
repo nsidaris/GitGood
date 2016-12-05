@@ -6,7 +6,12 @@
  */
 
 #include "Map.h"
-
+/*!
+   * \file Map.cpp
+   * \brief  Source file for map class
+   *
+   * This file contains all of the definitions of the map class
+   */
 Map::Map() {
 	// TODO Auto-generated constructor stub
 

@@ -8,7 +8,12 @@
  *************************************************************************/
 #include "Graph.h"
 #include<QDebug>
-
+/*!
+   * \file Graph.cpp
+   * \brief  Source file for graph class
+   *
+   * This file contains all of the definitions of the graph class
+   */
 Graph::Graph()
 {
 	for(int i = 0; i < 12; i++)
@@ -17,37 +22,6 @@ Graph::Graph()
 		visitedDFS.push_back(NOT_VISITED);
 	}
 	totalDistance = 0;
-
-//	//PROCESSING - need to create a copy of the array because can't initialize
-//		//				array in the header file.
-//		int copy[12][12] =
-//			{ {0,    381,  0,    1015, 0,    1663, 1435, 0,    0,   0,    0,   0}, //Los Angeles
-//	  	    {381,  0,    807,  1267, 0,    0,    0,    0,    0,   0,    0,   0},
-//		    {0,    807,  0,    1331, 2097, 0,    0,    0,    0,   0,    0,   0},
-//		    {1015, 1267, 1331, 0,    1003, 599,  0,    0,    0,   0,    0,   0},
-//		    {0,    0,    2097, 1003, 0,    533,  0,    0,    983, 787,  0,   0},
-//		    {1663, 0,    0,    599,  533,  0,    496,  0,    0,   1260, 864, 0},
-//			{1435, 0,    0,    0,    0,    496,  0,    239,  0,   0,    781, 0},
-//			{0,    0,    0,    0,    0,    0,    239,  0,    0,   0,    810, 1187},
-//			{0,    0,    0,    0,    983,  0,    0,    0,    0,   214,  0,   0},
-//			{0,    0,    0,    0,    787,  1260, 0,    0,    214, 0,    888, 0},
-//			{0,    0,    0,    0,     0,   864,  781,  810,  0,   888,  0,   661},
-//			{0,    0,    0,    0,     0,   0,    0,    1187, 0,   0,    661, 0},
-//		    };
-
-//		vector<int> row;
-
-//		//PROCESSING - copies values in copy array into private variable matrix
-//		for(int i = 0; i < 12; i++)
-//		{
-//			for(int j = 0; j < 12; j++)
-//			{
-//				 row.push_back(copy[i][j]);
-//			}
-//			matrix.push_back(row);
-//			row.clear();
-//		}
-
 
 
 

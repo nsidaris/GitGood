@@ -15,7 +15,12 @@
 #include <QGridLayout>
 #include "Graph.h"
 #include "Map.h"
-
+/*!
+   * \file mainwindow.h
+   * \brief  Header for mainwindow class
+   *
+   * This file contains all of the declarations of the mainwindow class
+   */
 
 namespace Ui {
 class MainWindow;

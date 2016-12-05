@@ -3,7 +3,7 @@
 
 /*!
    * \file mainwindow.cpp
-   * \brief  Header for mainwindow class
+   * \brief  Source for mainwindow class
    *
    * This file contains all of the definitions of the mainwindow class
    */
