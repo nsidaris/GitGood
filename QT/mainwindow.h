@@ -10,6 +10,9 @@
 #include <QLocale>
 #include <QMap>
 #include <QList>
+#include <QCheckBox>
+#include <QRadioButton>
+#include <QGridLayout>
 #include "Graph.h"
 
 
@@ -36,6 +39,8 @@ public:
     explicit MainWindow(QWidget *parent = 0); //MA
     ~MainWindow();
 
+signals:
+    void CustomTrip(QVector<int>, int);
 
 
 private slots:
@@ -70,6 +75,14 @@ private slots:
 
     void on_TestButton_clicked();
 
+    void on_VisitSelected_Button_clicked();
+
+    void on_buttonBox_rejected();
+
+    void on_buttonBox_accepted();
+
+    void on_BackButton_clicked();
+
 private:
 
     Ui::MainWindow *ui; //mainwindow
@@ -103,6 +116,8 @@ private:
      */
     void fillGraph();
 
+    void FillTripLabels(QString name);
+
     //add method to fill MST GUI once it is implemented
 
 
@@ -125,6 +140,12 @@ private:
 
     QVector<QString>masterTeamNameList; //list of teams in default db order
     QVector<QString>masterStadiumList; //list of all stadiums
+    QVector<QRadioButton*> radioList;
+    QList<QCheckBox*> checkboxList;
+       QVector<int> dijkstraList;
+       QVector<int> dist;
+        QVector<int> customList;
+        QVector<int> customDist;
 
 
     //-----------------------------------------------------------

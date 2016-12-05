@@ -13,7 +13,7 @@
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../Database/football.db");
+    db.setDatabaseName("football.db");
 
 
     if(!db.open())
@@ -614,6 +614,66 @@ void Database::GetAllTeamInfo(QVector<QString>& name, QVector<QString>& stadium,
     }
 }
 
+void Database::GetOneTeamInfo(QString &name, QString &stadium, double &seating, QString &location, QString &conference, QString &surface, QString &roof, QString &player)
+{
+    QSqlQuery query(db);//CALC - variable to access database
+
+    //PROCESSING - sql statement to get information from stadium
+    query.prepare("SELECT STADIUM_NAME, SEATING_CAP, LOCATION, CONFERENCE, SURFACE, ROOF_TYPE, STAR_PLAYER FROM STADIUM"
+                  " WHERE TEAM_NAME = :team");
+    query.bindValue(":team",name);
+
+    //PROCESSING - executes statement
+    if(query.exec())
+    {
+        //PROCESSING - loops through query and adds teams information to vectors
+        while(query.next())
+        {
+            stadium = query.value(0).toString();
+            seating = query.value(1).toDouble(0) ;
+            location = query.value(2).toString();
+
+            //PROCESSING - adds conference name based on input.
+            //          AFC = American Football Conference
+            //          NFC = National Football Conference
+            if(query.value(3).toString() == "AFC")
+            {
+                conference = "American Football Conference";
+            }
+            else
+            {
+                conference = "National Football Conference" ;
+            }
+
+            surface = query.value(4).toString();
+
+            //PROCESSING - adds conference name based on input.
+            //          O = Open
+            //          F = Fixed
+            //          R = Retractable
+            if(query.value(5).toString() == "O")
+            {
+                roof = "Open";
+            }
+            else if(query.value(5).toString() == "F")
+            {
+                roof = "Fixed";
+            }
+            else
+            {
+                roof = "Retractable";
+            }
+
+            player = query.value(6).toString();
+
+        }//END while
+    }//END if
+    else
+    {
+        qDebug() << query.lastError() << "\toneTeam";
+    }
+}
+
 int Database::seatingSum()
 {
     int sum = 0;
@@ -701,4 +761,75 @@ void Database::getTeamsAndStadiums(QVector<QString> &stadium,QVector<QString> &n
     {
          qDebug()<< query.lastError();
     }
+}
+
+QVector<int> Database::TeamNamesToNodes(QVector<QString> &teams)
+{
+    QVector<int> teamNumbers;
+    QSqlQuery query(db);
+
+    for(int i = 0; i < teams.size(); i++)
+    {
+        query.prepare("SELECT TEAM FROM STADIUM WHERE TEAM_NAME = :team");
+        query.bindValue(":team", teams[i]);
+
+        if(query.exec())
+        {
+            while(query.next())
+            {
+                teamNumbers.push_back(query.value(0).toInt(0));
+            }
+        }
+        else
+        {
+             qDebug()<< query.lastError();
+        }
+    }
+    return teamNumbers;
+}
+
+int Database::GetTeamNumber(QString team)
+{
+    QSqlQuery query(db);
+
+    int num;
+    query.prepare("SELECT TEAM FROM STADIUM WHERE TEAM_NAME = :team");
+    query.bindValue(":team", team);
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            num = query.value(0).toInt(0);
+        }
+    }
+    else
+    {
+         qDebug()<< query.lastError() << "\tteam number";
+    }
+
+    return num;
+}
+
+QString Database::GetTeamName(int number)
+{
+    QSqlQuery query(db);
+
+    QString team;
+    query.prepare("SELECT TEAM_NAME FROM STADIUM WHERE TEAM = :team");
+    query.bindValue(":team", number);
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            team = query.value(0).toString();
+        }
+    }
+    else
+    {
+         qDebug()<< query.lastError() << "\tteam name";
+    }
+
+    return team;
 }

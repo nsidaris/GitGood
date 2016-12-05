@@ -249,7 +249,7 @@ float Graph::GetTotalDistanceTraveled() const
 	return totalDistance;
 }
 
-int Graph::minDistance(vector<int> dist, vector<bool> sptSet)
+int Graph::minDistance(QVector<int> dist, QVector<bool> sptSet)
 {
 	const int INTMAX = 99999;
 	// Initialize min value
@@ -271,13 +271,13 @@ int Graph::minDistance(vector<int> dist, vector<bool> sptSet)
 
 
 
-void Graph::Dijkstra(int src, vector<int> &dist, vector<int> &dijkstraList)
+void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 {
 
 	//vector< vector<int> > graph = mapMatrix.GetMatrix();
 
 	//vector<int> dist;
-	vector<bool> sptSet;
+    QVector<bool> sptSet;
 
 
 	const int INTMAX = 99999;

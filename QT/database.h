@@ -206,6 +206,10 @@ public:
                         QVector<QString> &location, QVector<QString> &conference,
                         QVector<QString> &surface, QVector<QString> &roof, QVector<QString> &player);
 
+    void GetOneTeamInfo(QString &name, QString &stadium, double &seating,
+                        QString &location, QString &conference,
+                        QString &surface, QString &roof, QString &player);
+
     /*!
      * \brief seatingSum
      * \return
@@ -234,6 +238,10 @@ public:
      */
     void getTeamsAndStadiums(QVector<QString> &stadium,QVector<QString> &name );
 
+    QVector<int> TeamNamesToNodes(QVector<QString>& teams);
+
+    int GetTeamNumber(QString team);
+QString GetTeamName(int number);
 
 protected:
     /*!

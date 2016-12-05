@@ -118,7 +118,7 @@ public:
      * \param dist
      * \param dijkstraList
      */
-	void Dijkstra(int src, vector<int> &dist, vector<int> &dijkstraList);
+    void Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList);
     void MST(int &distTraveled, QVector<int> &first, QVector<int> &second, QVector<int> &dist);
 
 
@@ -145,7 +145,7 @@ protected:
      * \param sptSet
      * \return
      */
-	int minDistance(vector<int>dist, vector<bool> sptSet);
+    int minDistance(QVector<int> dist, QVector<bool> sptSet);
     /*!
      * \brief minKey
      * \param key
