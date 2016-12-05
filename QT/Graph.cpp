@@ -394,28 +394,12 @@ void Graph::MST(int &distTraveled, QVector<int> &first, QVector<int> &second, QV
     for(int i = 0; i < size; i++)
 	{
 
-
-        if(i > 0)
-        {
-            if(parent[i] != parent[i-1])
-            {
-                first.push_back(parent[i]);
-                second.push_back(i);
-                dist.push_back(matrix[i][parent[i]]);
-
-                distTraveled += matrix[i][parent[i]];
-            }
-
-
-        }
-        else
-        {
             first.push_back(parent[i]);
             second.push_back(i);
             dist.push_back(matrix[i][parent[i]]);
 
             distTraveled += matrix[i][parent[i]];
-        }
+
 
 	}
 

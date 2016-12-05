@@ -228,7 +228,18 @@ void MainWindow::refreshMST()
 
     for(int i = 1; i < first.size(); i++)
     {
-       ui->MSTList->addItem(masterStadiumList[first[i]] + " -> " +masterStadiumList[second[i]] + " Cost: " + QString::number(dist2[i]) + " miles ");
+        //account for 2 stadiums sharing
+        if(masterStadiumList[second[i]] != masterStadiumList[second[i-1]])
+        {
+            ui->MSTList->addItem(masterStadiumList[first[i]] + " -> " +masterStadiumList[second[i]] + " Cost: " + QString::number(dist2[i]) + " miles ");
+        }
+        else
+        {
+            distanceTot -= dist2[i];
+        }
+
+
+
     }
      QLocale l = QLocale::system();
     ui->TotalMST->setText("Total Cost: " + l.toString(distanceTot) + " miles");
