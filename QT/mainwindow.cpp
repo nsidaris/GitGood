@@ -34,7 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->spinBox_SeatCap->setMaximum(100000);
 
     nextStadiumClicked = -1;
-    fillGraph();
+    fillGraph(); //initialize the graph
+
+
+    refreshMST(); //fill up the mst info tab
 }
 
 MainWindow::~MainWindow()
@@ -208,6 +211,39 @@ void MainWindow::FillTripLabels(QString name)
 
 }
 
+
+
+void MainWindow::refreshMST()
+{
+    int distanceTot;
+    QVector<int> first;
+    QVector<int> second;
+    QVector<int> dist2;
+    graph.MST(distanceTot, first, second, dist2);
+
+
+
+
+    for(int i = 1; i < first.size(); i++)
+    {
+       ui->MSTList->addItem(masterStadiumList[first[i]] + " -> " +masterStadiumList[second[i]] + " Cost: " + QString::number(dist2[i]) + " miles ");
+    }
+     QLocale l = QLocale::system();
+    ui->TotalMST->setText("Total Cost: " + l.toString(distanceTot) + " miles");
+}
+//int distanceTot;
+//QVector<int> first;
+//QVector<int> second;
+//QVector<int> dist2;
+//graph.MST(distanceTot, first, second, dist2);
+
+//qDebug() << "MST Stuff";
+
+
+//for(int i = 1; i < first.size(); i++)
+//{
+//    qDebug() << masterStadiumList[first[i]] << "--" << masterStadiumList[second[i]] << "->" << dist2[i];
+//}
 
 //Private Slots:
 //-------------------------------------------------------------------------------------------------------------------
@@ -540,6 +576,8 @@ void MainWindow::on_AddLV_Button_clicked()
                 fillTeamComboBoxs(); //refill the admin souvenir combobox so lv's items can be modifield
                 on_comboBox_TeamInfo_currentIndexChanged(ui->comboBox_TeamInfo->currentIndex()); //update the information tab on the fly, refresh no longer needed
                 fillAdminTeamTable(); //update admin team table
+                 fillGraph();
+                  refreshMST();
                 QMessageBox::information(this, tr("Added"),
                                          "Las Vegas has been added");
             }
@@ -552,7 +590,7 @@ void MainWindow::on_AddLV_Button_clicked()
                                  "Las Vegas is already in the system");
     }
 
-    fillGraph();
+//    fillGraph();
 }
 //souvenir tab team selector, allows admin to pick which team's items to modify
 void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)

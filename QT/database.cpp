@@ -149,7 +149,7 @@ void Database::GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString>
     QSqlQuery query; //CALC - variable to access the database
 
     //PROCESSING - sql statement to retrieve info from the database
-    query.prepare("SELECT TEAM_NAME,STADIUM_NAME,SURFACE,LOCATION FROM STADIUM ORDER BY SEATING_CAP");
+    query.prepare("SELECT TEAM_NAME,STADIUM_NAME,SURFACE,LOCATION FROM STADIUM ORDER BY SURFACE");
 
     if(query.exec())
     {
@@ -293,7 +293,7 @@ bool Database::AddLasVegas(QString name, QString stadium, int capacity, QString 
      ************************************************************************/
     for(int i = 0; i < B.size(); i++)
     {
-        query.prepare("INSERT INTO NODES (A, B, DISTANCE) VALUES (:A, :B, :distance)");
+        query.prepare("INSERT INTO node (A, B, DISTANCE) VALUES (:A, :B, :distance)");
         query.bindValue(":A", A);
         query.bindValue(":B", B[i]);
         query.bindValue(":distance", distance[i]);

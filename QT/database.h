@@ -33,22 +33,30 @@ public:
 
     /**
      * @brief GetAFCTeams
-     * @return
+     *
+     * NFL teams sorted by team name.
+
+     * @return QVector of QString contia
      */
     QVector<QString> GetAFCTeams();
     
     /**
      * @brief GetNationalConferenceTeams
+     *
+     *
      * @return
      */
     QVector<QString> GetNationalConferenceTeams();
 
     /**
      * @brief GetTeamBySeatingCapacity
-     * @param name
-     * @param stadium
-     * @param capacity
-     * @param location
+     *
+     *National Football Conference teams sorted by team name.
+
+     * @param name Team name
+     * @param stadium stadium name
+     * @param capacity Seating Capacity
+     * @param location Stadium Location
      */
     void GetTeamBySeatingCapacity(QVector<QString> &name, QVector<QString> &stadium,
                                   QVector<float> &capacity, QVector<QString> &location);
@@ -237,11 +245,26 @@ public:
      * \param name
      */
     void getTeamsAndStadiums(QVector<QString> &stadium,QVector<QString> &name );
+    /*!
+     * \brief TeamNamesToNodes
+     * \param teams
+     * \return
+     */
 
     QVector<int> TeamNamesToNodes(QVector<QString>& teams);
 
+    /*!
+     * \brief GetTeamNumber
+     * \param team
+     * \return
+     */
     int GetTeamNumber(QString team);
-QString GetTeamName(int number);
+    /*!
+ * \brief GetTeamName
+ * \param number
+ * \return
+ */
+    QString GetTeamName(int number);
 
 protected:
     /*!

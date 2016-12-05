@@ -40,6 +40,9 @@ public:
     ~MainWindow();
 
 signals:
+    /*!
+     * \brief CustomTrip
+     */
     void CustomTrip(QVector<int>, int);
 
 
@@ -117,6 +120,9 @@ private:
     void fillGraph();
 
     void FillTripLabels(QString name);
+
+
+    void refreshMST();
 
     //add method to fill MST GUI once it is implemented
 

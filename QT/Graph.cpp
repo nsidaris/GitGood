@@ -273,7 +273,7 @@ int Graph::minDistance(QVector<int> dist, QVector<bool> sptSet)
 
 void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 {
-qDebug() << "Begin";
+//qDebug() << "Begin";
 	//vector< vector<int> > graph = mapMatrix.GetMatrix();
 
 	//vector<int> dist;
@@ -288,7 +288,7 @@ qDebug() << "Begin";
 		dist.push_back(INTMAX);
 		sptSet.push_back(false); // = false;
 	}
-    qDebug() << "size" << size;
+   // qDebug() << "size" << size;
 
 
 
@@ -296,7 +296,7 @@ qDebug() << "Begin";
 	// Distance of source vertex from itself is always 0
 	dist[src] = 0;
 
-    qDebug() << "after dis and spset";
+    //qDebug() << "after dis and spset";
 
 	// cin.get();
 	// Find shortest path for all vertices
@@ -326,7 +326,7 @@ qDebug() << "Begin";
 
 		}
 
-qDebug() << "after for";
+//qDebug() << "after for";
 	}
 
 
@@ -419,16 +419,30 @@ void Graph::MST(int &distTraveled, QVector<int> &first, QVector<int> &second, QV
 
     for(int i = 0; i < size; i++)
 	{
-		//cout << "here";
-        //toAdd = printCity(parent[i]) + " - " + printCity(i) + " Weight: " + NumberToString(matrix[i][parent[i]]) +"";
-		//cout << toAdd << endl;
-    //	mstList.push_back(toAdd);
 
-        first.push_back(parent[i]);
-        second.push_back(i);
-        dist.push_back(matrix[i][parent[i]]);
 
-		distTraveled += matrix[i][parent[i]];
+        if(i > 0)
+        {
+            if(parent[i] != parent[i-1])
+            {
+                first.push_back(parent[i]);
+                second.push_back(i);
+                dist.push_back(matrix[i][parent[i]]);
+
+                distTraveled += matrix[i][parent[i]];
+            }
+
+
+        }
+        else
+        {
+            first.push_back(parent[i]);
+            second.push_back(i);
+            dist.push_back(matrix[i][parent[i]]);
+
+            distTraveled += matrix[i][parent[i]];
+        }
+
 	}
 
 
@@ -436,7 +450,7 @@ void Graph::MST(int &distTraveled, QVector<int> &first, QVector<int> &second, QV
 
 
 
-	//printMST(parent, 12, graph);
+
 }
 
 
