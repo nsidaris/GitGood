@@ -280,10 +280,10 @@ void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 		// yet processed. u is always equal to src in first iteration.
 		int u = minDistance(dist, sptSet);
 
-        qDebug() << "after min";
+
 		// Mark the picked vertex as processed
 		sptSet[u] = true;
-        qDebug() << "sptset true";
+
 
 		// Update dist value of the adjacent vertices of the picked vertex.
         for (int v = 0; v < size; v++)
@@ -300,37 +300,36 @@ void Graph::Dijkstra(int src, QVector<int> &dist, QVector<int> &dijkstraList)
 
 		}
 
-//qDebug() << "after for";
 	}
 
 
-	//vector<int> dijkstraList;
+    //vector<int> dijkstraList;
     for(int i = 0; i < size; i++)
-	{
-		dijkstraList.push_back(i);
-	}
+    {
+        dijkstraList.push_back(i);
+    }
 
-	int j;		//CALC - second loop control variables
-	int temp1;	//CALC - holds copy of value
-	int temp2;  //CALC - holds copy of value
+    int j;		//CALC - second loop control variables
+    int temp1;	//CALC - holds copy of value
+    int temp2;  //CALC - holds copy of value
 
-	//PROCESSING - insertion sort to sort the edgeList from least to greatest
-	for(int index = 0; index < dist.size(); index++)
-	{
-		j = index;
-		while(j > 0 && (dist[j] < dist[j - 1]) )
-		{
-			temp1 = dist[j];
-			temp2 = dijkstraList[j];
+    //PROCESSING - insertion sort to sort the edgeList from least to greatest
+    for(int index = 0; index < dist.size(); index++)
+    {
+        j = index;
+        while(j > 0 && (dist[j] < dist[j - 1]) )
+        {
+            temp1 = dist[j];
+            temp2 = dijkstraList[j];
 
-			dist[j] = dist[j-1];
-			dijkstraList[j] = dijkstraList[j-1];
+            dist[j] = dist[j-1];
+            dijkstraList[j] = dijkstraList[j-1];
 
-			dist[j-1] = temp1;
-			dijkstraList[j-1] = temp2;
-			j--;
-		}
-	}
+            dist[j-1] = temp1;
+            dijkstraList[j-1] = temp2;
+            j--;
+        }
+    }
 
 
 }

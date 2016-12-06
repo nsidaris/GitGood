@@ -13,7 +13,7 @@
 Database::Database()
 {
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../Database/football.db");
+    db.setDatabaseName(".../Database/football.db");
 
 
     if(!db.open())
@@ -791,8 +791,8 @@ QVector<int> Database::TeamNamesToNodes(QVector<QString> &teams)
 int Database::GetTeamNumber(QString team)
 {
     QSqlQuery query(db);
+    int number;
 
-    int num;
     query.prepare("SELECT TEAM FROM STADIUM WHERE TEAM_NAME = :team");
     query.bindValue(":team", team);
 
@@ -800,19 +800,16 @@ int Database::GetTeamNumber(QString team)
     {
         while(query.next())
         {
-            qDebug() << "number" << query.value(0).toInt(0);
-            num = query.value(0).toInt(0);
-
+            number = query.value(0).toInt(0);
+            //qDebug() << number;
         }
-
-        qDebug() << "number" << num;
     }
     else
     {
-         qDebug()<< query.lastError() << "\tteam number";
+         qDebug()<< query.lastError();
     }
 
-    return num;
+    return number;
 }
 
 QString Database::GetTeamName(int number)
@@ -822,6 +819,29 @@ QString Database::GetTeamName(int number)
     QString team;
     query.prepare("SELECT TEAM_NAME FROM STADIUM WHERE TEAM = :team");
     query.bindValue(":team", number);
+
+    if(query.exec())
+    {
+        while(query.next())
+        {
+            team = query.value(0).toString();
+        }
+    }
+    else
+    {
+         qDebug()<< query.lastError() << "\tteam name";
+    }
+
+    return team;
+}
+
+QString Database::GetTeamName(QString stadium)
+{
+    QSqlQuery query(db);
+
+    QString team;
+    query.prepare("SELECT TEAM_NAME FROM STADIUM WHERE STADIUM_NAME = :team");
+    query.bindValue(":team", stadium);
 
     if(query.exec())
     {

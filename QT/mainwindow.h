@@ -92,6 +92,8 @@ private slots:
 
     void on_BackButton_clicked();
 
+    void on_SelectTeamsTable_cellDoubleClicked(int row, int column);
+
 private:
 
     Ui::MainWindow *ui; //mainwindow
@@ -152,13 +154,13 @@ private:
 
     QVector<QString>masterTeamNameList; //list of teams in default db order
     QVector<QString>masterStadiumList; //list of all stadiums
-    QVector<QRadioButton*> radioList;
-    QList<QCheckBox*> checkboxList;
+
        QVector<int> dijkstraList;
        QVector<int> dist;
         QVector<int> customList;
         QVector<int> customDist;
         double totalDistance;
+    QVector<QString> teamsSelected;
 
 
     //-----------------------------------------------------------

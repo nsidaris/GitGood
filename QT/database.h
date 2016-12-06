@@ -290,6 +290,8 @@ public:
     */
     QString GetTeamName(int number);
 
+    QString GetTeamName(QString stadium);
+
 protected:
     /*!
      * \brief Exists

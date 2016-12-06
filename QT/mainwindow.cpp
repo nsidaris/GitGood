@@ -182,6 +182,8 @@ void MainWindow::FillTripLabels(QString name)
     //gets all of team info and stores them into paramaters passed in
     db.GetOneTeamInfo(name, stadium, seating, location, conference, surface, roof, player);
 
+    qDebug() << "namesssss " << name;
+
     //Clears souvenirs table
     ClearTable(ui->SouvenirsTable);
 
@@ -893,14 +895,37 @@ void MainWindow::on_NextStadium_Button_clicked()
         }
     }
 
+
+
     //Updates next stadium clicked
     nextStadiumClicked++;
 
     //Resets all labels and menu to new stadium
-    if(nextStadiumClicked < dijkstraList.size())
+    if(nextStadiumClicked < teamsSelected.size())
     {
+        qDebug() << "dist " << dist[db.GetTeamNumber(teamsSelected[nextStadiumClicked]) - 1];
+        totalDistance += dist[db.GetTeamNumber(teamsSelected[nextStadiumClicked]) - 1];
 
-        FillTripLabels(masterTeamNameList[dijkstraList[nextStadiumClicked]]);
+        //totalDistance += dist[nextStadiumClicked];
+        dist.clear();
+        dijkstraList.clear();
+//        QVector<QString> names = db.GetAllTeams();
+//        dijkstraList = db.TeamNamesToNodes(names);
+
+        int teamNum = db.GetTeamNumber(teamsSelected[nextStadiumClicked]);
+        int t;
+
+        graph.Dijkstra(teamNum,dist,dijkstraList);
+
+        for(int i = 0; i < dijkstraList.size(); i++)
+        {
+            if(teamNum == dijkstraList[i] + 1)
+            {
+                t = dijkstraList[i] + 1;
+            }
+        }
+
+        FillTripLabels(db.GetTeamName(t));
     }
     else
     {
@@ -953,7 +978,7 @@ void MainWindow::on_NextStadium_Button_clicked()
         ui->TotalSpentTable->horizontalHeader()->setStretchLastSection(true);
 
         ui->GrandTotalLabel->setText(QString::number(totalSpent));
-
+        ui->totDistLabel->setText(QString::number(totalDistance));
 
 
 
@@ -980,6 +1005,7 @@ void MainWindow::on_NextStadium_Button_clicked()
  */
 void MainWindow::on_VisitAll_Button_clicked()
 {
+    totalDistance = 0;
     //Sets index to trip apge
     ui->TripsWidget->setCurrentIndex(1);
 
@@ -988,6 +1014,7 @@ void MainWindow::on_VisitAll_Button_clicked()
 
     dist.clear();
     dijkstraList.clear();
+
     graph.Dijkstra(15,dist,dijkstraList);
 
     ClearTable(ui->TotalSpentTable);
@@ -1082,46 +1109,30 @@ void MainWindow::on_TestButton_clicked()
  * @brief MainWindow::on_VisitSelected_Button_clicked
  */
 void MainWindow::on_VisitSelected_Button_clicked()
-{
+{   
     ui->TripsWidget->setCurrentIndex(3);
     fillGraph();
-    QVector<QString> teams = db.GetAllTeams();
+    QVector<QString> teams;
+    QVector<QString> stadiums;
 
-    int col = 0;
-    int row = 1;
+    db.getTeamsAndStadiums(stadiums,teams);
 
-    //creates new layout to be added to group box
-    QGridLayout *layout = new QGridLayout;
+    ClearTable(ui->SelectTeamsTable);
+    teamsSelected.clear();
+    ui->TeamsQueue->clear();
 
-    QLabel *teamLabel = new QLabel("Team Name");
-    QLabel *StartingLabel = new QLabel("Starting Team?");
-    layout->addWidget(teamLabel,0,col);
-    layout->addWidget(StartingLabel,0,col + 1);
+    //fill up the table
+    ui->SelectTeamsTable->insertColumn(0);
+    ui->SelectTeamsTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Stadium"));
 
-    //adds checkboxes and radioboxs for each team
-    for(int i = 1; i <= teams.size(); i++)
+    for(int i = 0; i < teams.size(); i++)
     {
-        QCheckBox *box = new QCheckBox(teams[i - 1]);
-        layout->addWidget(box,row,col);
-        QRadioButton *radioButton = new QRadioButton;
-        layout->addWidget(radioButton,row,col + 1);
-        radioList << radioButton;
-        checkboxList << box;
-
-        //creates new column
-        if(row % 20 == 0)
-        {
-            col +=2;
-            row = 0;
-            QLabel *teamLabel2 = new QLabel("Team Name");
-            QLabel *StartingLabel2 = new QLabel("Starting Team?");
-            layout->addWidget(teamLabel2,0,col);
-            layout->addWidget(StartingLabel2,0,col + 1);
-        }
-        row++;
+        ui->SelectTeamsTable->insertRow(i);
+        ui->SelectTeamsTable->setItem(i,0,new QTableWidgetItem(stadiums[i]));
     }
-    //sets layout
-    ui->groupBox->setLayout(layout);
+    ui->SelectTeamsTable->resizeColumnsToContents();
+    ui->SelectTeamsTable->resizeRowsToContents();
+    ui->SelectTeamsTable->horizontalHeader()->setStretchLastSection(true);
 
 }
 
@@ -1133,86 +1144,26 @@ void MainWindow::on_buttonBox_rejected()
 
 void MainWindow::on_buttonBox_accepted()
 {
-    QVector<QString> teams = db.GetAllTeams(); //gets all reams
-    QVector<QString> selected;
-    QVector<int> teamNumbers;
-    int startNumber;
-    QString start = "";
-
-    for(int i = 0; i < checkboxList.size(); i++)
+    if(teamsSelected.size() == 0)
     {
-
-        if(checkboxList[i]->isChecked())
-        {
-            selected.push_back(teams[i]);
-        }
-
-        if(radioList[i]->isChecked())
-        {
-            start = teams[i];
-            if(selected.contains(teams[i]))
-            {
-                selected.pop_back();
-            }
-        }
-    }
-
-/*    if(selected.size() == 0)
-    {
-        QMessageBox::information(this, tr("No Boxes checked"),
-                                 "Please check at least one box to start the trip");
-    }
-    else*/ if(start == "")
-    {
-        QMessageBox::information(this, tr("No Starting Team"),
-                                 "Please choose a team to start at");
+        QMessageBox::information(this, tr("No Teams Selected"),
+                                 "Please choose at least two teams to visit");
     }
     else
     {
-        ui->TripsWidget->setCurrentIndex(1);
-        teamNumbers = db.TeamNamesToNodes(selected);
-        startNumber = db.GetTeamNumber(start);
-
-        dijkstraList.clear();
-        dist.clear();
-        customList.clear();
-        customDist.clear();
-
-
-        graph.Dijkstra(startNumber - 1,dist,dijkstraList);
-
-        for(int i = 0; i < dijkstraList.size(); i++)
-        {
-            for(int j = 0; j < teamNumbers.size(); j++)
-            {
-                if(dijkstraList[i] + 1 == teamNumbers[j])
-                {
-                    customList.push_back(dijkstraList[i]);
-                    customDist.push_back(dist[i]);
-                }
-            }
-        }
-
-        customList.swap(dijkstraList);
-        customDist.swap(dist);
-        dijkstraList.push_front(startNumber - 1);
-
         nextStadiumClicked = 0;
-        FillTripLabels(masterTeamNameList[dijkstraList[nextStadiumClicked]]);
+        ui->TripsWidget->setCurrentIndex(1);
+        dist.clear();
+        dijkstraList.clear();
 
-        for(int i = 0; i < checkboxList.size(); i++)
-        {
-            checkboxList[i]->setCheckState(Qt::Unchecked);
-            radioList[i]->setChecked(false);
-        }
+//        QVector<QString> names = db.GetAllTeams();
+//        dijkstraList = db.TeamNamesToNodes(names);
 
-        QLayoutItem* item =  ui->groupBox->layout()->takeAt(0) ;
-            while ( item  != 0 )
-            {
-                ui->groupBox->layout()->removeItem(item);
-                delete item;
-                item =  ui->groupBox->layout()->takeAt(0) ;
-            }
+        graph.Dijkstra(db.GetTeamNumber(teamsSelected[nextStadiumClicked]), dist, dijkstraList);
+
+
+        FillTripLabels(teamsSelected[nextStadiumClicked]);
+        totalDistance = 0;
 
 
     }//END if else if
@@ -1226,4 +1177,15 @@ void MainWindow::on_BackButton_clicked()
     ClearTable(ui->TotalSpentTable);
     ui->TripsWidget->setCurrentIndex(0);
     nextStadiumClicked = -1;
+}
+
+void MainWindow::on_SelectTeamsTable_cellDoubleClicked(int row, int column)
+{
+    QString stadium;
+
+    stadium = ui->SelectTeamsTable->item(row,column)->text();
+
+    teamsSelected.push_back(db.GetTeamName(stadium));
+
+    ui->TeamsQueue->append(stadium);
 }
