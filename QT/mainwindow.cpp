@@ -1159,7 +1159,7 @@ void MainWindow::on_buttonBox_accepted()
 //        QVector<QString> names = db.GetAllTeams();
 //        dijkstraList = db.TeamNamesToNodes(names);
 
-        graph.Dijkstra(db.GetTeamNumber(teamsSelected[nextStadiumClicked]), dist, dijkstraList);
+        graph.Dijkstra(db.GetTeamNumber(teamsSelected[nextStadiumClicked])-1, dist, dijkstraList);
 
 
         FillTripLabels(teamsSelected[nextStadiumClicked]);
