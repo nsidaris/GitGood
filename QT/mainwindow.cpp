@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     refreshMST(); //fill up the mst info tab
 
-    ui->usersTab->removeTab(5);
+    //ui->usersTab->removeTab(5);
     totalDistance = 0;
     ui->TripsWidget->setCurrentIndex(0);
 }
@@ -915,7 +915,7 @@ void MainWindow::on_NextStadium_Button_clicked()
         int teamNum = db.GetTeamNumber(teamsSelected[nextStadiumClicked]);
         int t;
 
-        graph.Dijkstra(teamNum,dist,dijkstraList);
+        graph.Dijkstra(teamNum-1,dist,dijkstraList);
 
         for(int i = 0; i < dijkstraList.size(); i++)
         {
