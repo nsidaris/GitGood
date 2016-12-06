@@ -39,7 +39,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     refreshMST(); //fill up the mst info tab
 
+    ui->usersTab->removeTab(5);
     totalDistance = 0;
+    ui->TripsWidget->setCurrentIndex(0);
 }
 
 MainWindow::~MainWindow()
@@ -72,6 +74,8 @@ void MainWindow::ClearTable(QTableWidget *table)
     {
         table->removeColumn(0);
     }
+
+        ui->SouvenirsTable->horizontalHeader()->setStretchLastSection(false);
 }
 
 
@@ -132,39 +136,50 @@ void MainWindow::fillAdminTeamTable()
         ui->TeamsAdminTable->setItem(index,2,new QTableWidgetItem(QString::number(capacitys[index])));
         ui->TeamsAdminTable->setItem(index,3,new QTableWidgetItem(locations[index]));
     }
+    //Resizes columns and rows to fit space alloted
     ui->TeamsAdminTable->resizeColumnsToContents();
     ui->TeamsAdminTable->resizeRowsToContents();
     ui->TeamsAdminTable->horizontalHeader()->setStretchLastSection(true);
 
 }
 
-
+/**
+ * @brief MainWindow::fillGraph
+ */
 void MainWindow::fillGraph()
 {
 
+    //Clears vectors before they are reset
     masterStadiumList.clear();
     masterTeamNameList.clear();
     db.getTeamsAndStadiums(masterStadiumList, masterTeamNameList);
 
     int size;
-    QVector<int> start;
-    QVector<int> end;
-    QVector<int> dist;
+    QVector<int> start; //starting vertex
+    QVector<int> end;   //ending vertex
+    QVector<int> dist;  //distance between nodes
 
 
+    //gets noes with vertexes passed in and fills the graph
     db.getNodes(start, end, dist);
     graph.fill(db.getCount(), start, end, dist);
 }
 
+/**
+ * @brief MainWindow::FillTripLabels
+ * @param name
+ */
 void MainWindow::FillTripLabels(QString name)
 {
-    QString stadium;
-    double seating;
-    QString location;
-    QString conference;
-    QString surface;
-    QString roof;
-    QString player;
+    QString stadium;    //stadium name
+    double seating;     //seating capacity
+    QString location;   //location of stadium
+    QString conference; //conference
+    QString surface;    //surface type
+    QString roof;       //roof type
+    QString player; //star player
+
+    //gets all of team info and stores them into paramaters passed in
     db.GetOneTeamInfo(name, stadium, seating, location, conference, surface, roof, player);
 
     //Clears souvenirs table
@@ -182,8 +197,8 @@ void MainWindow::FillTripLabels(QString name)
     ui->SouvenirsTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Item"));
     ui->SouvenirsTable->insertColumn(1);
     ui->SouvenirsTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Price"));
-    ui->SouvenirsTable->insertColumn(1);
-    ui->SouvenirsTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Quantity"));
+    ui->SouvenirsTable->insertColumn(2);
+    ui->SouvenirsTable->setHorizontalHeaderItem(2, new QTableWidgetItem("Quantity"));
 
     /* inserts the teams souvenirs along with their prices tothe table */
     for(int i = 0; i < items.size(); i++)
@@ -212,9 +227,9 @@ void MainWindow::FillTripLabels(QString name)
     ui->Team_Logo->setPixmap(":/Teams/" + name + ".jpg");
 
 }
-
-
-
+/**
+ * @brief MainWindow::refreshMST
+ */
 void MainWindow::refreshMST()
 {
     int distanceTot;
@@ -222,9 +237,6 @@ void MainWindow::refreshMST()
     QVector<int> second;
     QVector<int> dist2;
     graph.MST(distanceTot, first, second, dist2);
-
-
-
 
     for(int i = 1; i < first.size(); i++)
     {
@@ -237,8 +249,6 @@ void MainWindow::refreshMST()
         {
             distanceTot -= dist2[i];
         }
-
-
 
     }
      QLocale l = QLocale::system();
@@ -627,7 +637,6 @@ void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)
     ui->AdminSouvTable->insertColumn(1);
     ui->AdminSouvTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Price"));
 
-
     for(int i = 0; i < names.size(); i++)
     {
         ui->AdminSouvTable->insertRow(i);
@@ -650,6 +659,7 @@ void MainWindow::on_NewItemAddButton_clicked()
 
     if(!souvName.isEmpty())
     {
+        //adds souvenir to database
         if(db.AddSouvenir(team, souvName, price))
         {
             on_AdminTeamSouvCombo_currentTextChanged(ui->AdminTeamSouvCombo->currentText()); //update the item table
@@ -658,23 +668,26 @@ void MainWindow::on_NewItemAddButton_clicked()
             //reset the input
             ui->NewItemNameInput->clear();
             ui->NewItemPriceInput->setValue(1.00);
-
         }
         else
         {
+            //error if souvenir already exists
             QMessageBox::information(this, tr("Error!"),
                                      team + " already offers this item");
         }
     }
     else
     {
+        //error if empty fields
         QMessageBox::information(this, tr("Invalid!"),
                                  "Please enter all fields");
     }
 
 }
 
-
+/**
+ * @brief MainWindow::on_AdminDeleteSouv_clicked
+ */
 void MainWindow::on_AdminDeleteSouv_clicked()
 {
     QString team = ui->AdminTeamSouvCombo->currentText();
@@ -692,6 +705,9 @@ void MainWindow::on_AdminDeleteSouv_clicked()
     }
 }
 
+/**
+ * @brief MainWindow::on_AdminUpdateSouv_clicked
+ */
 void MainWindow::on_AdminUpdateSouv_clicked()
 {
     QString team = ui->AdminTeamSouvCombo->currentText();
@@ -713,8 +729,6 @@ void MainWindow::on_AdminItemCombo_currentTextChanged(const QString &arg1)
 
 
 }
-
-
 
 //update stadium names
 void MainWindow::on_updateStadNutton_clicked()
@@ -914,22 +928,19 @@ void MainWindow::on_NextStadium_Button_clicked()
 
         while( i < souvenirs.size())
         {
-            ui->TotalSpentTable->insertRow(row);
-            ui->TotalSpentTable->setItem(row,0,new QTableWidgetItem(souvenirs.keys()[i]));
-
             for(int j = 0; j < souvenirs[souvenirs.keys()[i]].size(); j++)
             {
                 double price = db.getItemPrice(souvenirs.keys()[i],souvenirs[souvenirs.keys()[i]].GetList()[j].key);
                 int quantity = souvenirs[souvenirs.keys()[i]].GetList()[j].value;
                 totalSpent += price * quantity;
 
-
+                ui->TotalSpentTable->insertRow(row);
+                ui->TotalSpentTable->setItem(row,0,new QTableWidgetItem(souvenirs.keys()[i]));
                 ui->TotalSpentTable->setItem(row,1,new QTableWidgetItem(souvenirs[souvenirs.keys()[i]].GetList()[j].key));
                 ui->TotalSpentTable->setItem(row,2,new QTableWidgetItem(QString::number(quantity)));
                 ui->TotalSpentTable->setItem(row,3,new QTableWidgetItem(QString::number(price, 'f', 2)));
                 ui->TotalSpentTable->setItem(row,4,new QTableWidgetItem(QString::number(price * quantity, 'f', 2)));
                 row++;
-                ui->TotalSpentTable->insertRow(row);
             }
 
             ui->TotalSpentTable->removeRow(row);
@@ -978,6 +989,8 @@ void MainWindow::on_VisitAll_Button_clicked()
     dist.clear();
     dijkstraList.clear();
     graph.Dijkstra(15,dist,dijkstraList);
+
+    ClearTable(ui->TotalSpentTable);
 
     FillTripLabels(masterTeamNameList[dijkstraList[nextStadiumClicked]]);
 }
@@ -1077,6 +1090,7 @@ void MainWindow::on_VisitSelected_Button_clicked()
     int col = 0;
     int row = 1;
 
+    //creates new layout to be added to group box
     QGridLayout *layout = new QGridLayout;
 
     QLabel *teamLabel = new QLabel("Team Name");
@@ -1084,6 +1098,7 @@ void MainWindow::on_VisitSelected_Button_clicked()
     layout->addWidget(teamLabel,0,col);
     layout->addWidget(StartingLabel,0,col + 1);
 
+    //adds checkboxes and radioboxs for each team
     for(int i = 1; i <= teams.size(); i++)
     {
         QCheckBox *box = new QCheckBox(teams[i - 1]);
@@ -1093,6 +1108,7 @@ void MainWindow::on_VisitSelected_Button_clicked()
         radioList << radioButton;
         checkboxList << box;
 
+        //creates new column
         if(row % 20 == 0)
         {
             col +=2;
@@ -1104,13 +1120,10 @@ void MainWindow::on_VisitSelected_Button_clicked()
         }
         row++;
     }
-
+    //sets layout
     ui->groupBox->setLayout(layout);
 
 }
-
-
-
 
 
 void MainWindow::on_buttonBox_rejected()
@@ -1120,7 +1133,7 @@ void MainWindow::on_buttonBox_rejected()
 
 void MainWindow::on_buttonBox_accepted()
 {
-    QVector<QString> teams = db.GetAllTeams();
+    QVector<QString> teams = db.GetAllTeams(); //gets all reams
     QVector<QString> selected;
     QVector<int> teamNumbers;
     int startNumber;
@@ -1144,12 +1157,12 @@ void MainWindow::on_buttonBox_accepted()
         }
     }
 
-    if(selected.size() == 0)
+/*    if(selected.size() == 0)
     {
         QMessageBox::information(this, tr("No Boxes checked"),
                                  "Please check at least one box to start the trip");
     }
-    else if(start == "")
+    else*/ if(start == "")
     {
         QMessageBox::information(this, tr("No Starting Team"),
                                  "Please choose a team to start at");
@@ -1196,9 +1209,11 @@ void MainWindow::on_buttonBox_accepted()
         QLayoutItem* item =  ui->groupBox->layout()->takeAt(0) ;
             while ( item  != 0 )
             {
+                ui->groupBox->layout()->removeItem(item);
                 delete item;
                 item =  ui->groupBox->layout()->takeAt(0) ;
             }
+
 
     }//END if else if
 
@@ -1207,6 +1222,8 @@ void MainWindow::on_buttonBox_accepted()
 
 void MainWindow::on_BackButton_clicked()
 {
+    souvenirs.clear();
+    ClearTable(ui->TotalSpentTable);
     ui->TripsWidget->setCurrentIndex(0);
     nextStadiumClicked = -1;
 }
