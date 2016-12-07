@@ -745,9 +745,6 @@ void MainWindow::on_updateStadNutton_clicked()
         {
             fillAdminTeamTable();
             ui->AdminStadiumUpdateIn->clear();
-            QMessageBox::information(this, tr("Success!"),
-                                     team + " is now located at " + newName);
-
             ui->label_NewSeatCap->hide();
             ui->label_NewStadium->hide();
             ui->comboBox_UpdateTeam->hide();
@@ -755,6 +752,13 @@ void MainWindow::on_updateStadNutton_clicked()
             ui->spinBox_SeatCap->hide();
             ui->label_SelectTeam->hide();
             ui->updateStadNutton->hide();
+
+            fillTeamComboBoxs();
+
+            QMessageBox::information(this, tr("Success!"),
+                                     team + " is now located at " + newName);
+
+
         }
     }
     else
