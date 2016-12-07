@@ -155,12 +155,12 @@ private:
     QVector<QString>masterTeamNameList; //list of teams in default db order
     QVector<QString>masterStadiumList; //list of all stadiums
 
-       QVector<int> dijkstraList;
-       QVector<int> dist;
-        QVector<int> customList;
-        QVector<int> customDist;
-        double totalDistance;
-    QVector<QString> teamsSelected;
+    QVector<int>     dijkstraList;  //Ordr of dijkstra list
+    QVector<int>     dist;          //distancese parrallel with dijkstras list
+    QVector<int>     customList;    //list for custom trip
+    QVector<int>     customDist;    //distances parallel to customlist
+    double           totalDistance; //total distance traveled by user
+    QVector<QString> teamsSelected; //list of teams selected by the user
 
 
     //-----------------------------------------------------------

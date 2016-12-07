@@ -206,7 +206,6 @@ private:
 	vector<int> dfsList;	   //CALC - List of vertices by DFS
 	vector<int> bfsList;	  //CALC - matrix of vertices by BFS
 	float totalDistance;	  //CALC - total distance traveled
-
     int size;
 };
 

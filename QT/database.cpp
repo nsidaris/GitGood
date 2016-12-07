@@ -16,6 +16,8 @@ Database::Database()
     db.setDatabaseName("../Database/football.db");
 
 
+    //connectes to database and outpts message if connection
+    // was successfull
     if(!db.open())
         qDebug() << "Not connected to DB.";
     else if(db.open())
@@ -33,8 +35,10 @@ QVector<QString> Database::GetAllTeams()
 
     query.prepare("SELECT TEAM_NAME FROM STADIUM ORDER BY TEAM_NAME ASC");
 
+    /* executes query - outputs error if query not executed*/
     if(query.exec())
     {
+        /* adds teams selected from database to vector to return */
         while(query.next())
         {
             teams.push_back(query.value(0).toString());
@@ -151,8 +155,10 @@ void Database::GetTeamsSurfaceBySeating(QVector<QString> &name, QVector<QString>
     //PROCESSING - sql statement to retrieve info from the database
     query.prepare("SELECT TEAM_NAME,STADIUM_NAME,SURFACE,LOCATION FROM STADIUM ORDER BY SURFACE");
 
+    /* executes query - outputs error message if query not sucessful*/
     if(query.exec())
     {
+        /* adds data selected from database to appropiate vectors*/
         while(query.next())
         {
             name.push_back(query.value(0).toString());
@@ -178,8 +184,10 @@ void Database::GetPlayersByTeamname(QVector<QString> &names, QVector<QString> &p
 
     query.prepare("SELECT TEAM_NAME, STAR_PLAYER FROM STADIUM ORDER BY TEAM_NAME");
 
+    /*executes query - outputs error message if not successful*/
     if(query.exec())
     {
+        /* added names and players to appropiate vectors*/
         while(query.next())
         {
             names.push_back(query.value(0).toString());
@@ -203,9 +211,10 @@ void Database::GetNFLStadiums(QVector<QString> &stadium,QVector<QString> &name )
 
     query.prepare("SELECT STADIUM_NAME, TEAM_NAME FROM STADIUM ORDER BY TEAM_NAME");
 
-
+    /*executes query - outputs error message if not successful*/
     if(query.exec())
     {
+        /* added names and stadiums selected from database to appropiate vectors*/
         while(query.next())
         {
             stadium.push_back(query.value(0).toString());
@@ -229,9 +238,10 @@ void Database::GetOpenStadiums(QVector<QString> &stadium,QVector<QString> &name)
 
     query.prepare("SELECT STADIUM_NAME, TEAM_NAME FROM STADIUM WHERE ROOF_TYPE = 'O' ORDER BY STADIUM_NAME");
 
-
+    /*executes query - outputs error message if not successful*/
     if(query.exec())
     {
+         /* added names and stadiums selected from database to appropiate vectors*/
         while(query.next())
         {
             stadium.push_back(query.value(0).toString());
@@ -310,11 +320,6 @@ bool Database::AddLasVegas(QString name, QString stadium, int capacity, QString 
         }
     }//END - for(int i = 0; i < A.size(); i++)
 
-    /************************************************************************
-     * NEED TO ADD A QUERY FOR ADDING SOUVENIRS TO THE SOUVINER TABLE
-     ************************************************************************/
-
-
     return success;
 }
 
@@ -327,14 +332,17 @@ bool Database::AddLasVegas(QString name, QString stadium, int capacity, QString 
  */
 bool Database::AddSouvenir(QString team, QString item, float price)
 {
-    QSqlQuery query;
+    QSqlQuery query;    //CALC - accesses database
+
+    /* sql statement to get access datavase*/
     query.prepare("INSERT INTO SOUVENIRS (TEAM, SOUVENIR, PRICE) VALUES (:team, :item, :price)");
     query.bindValue(":team", team);
     query.bindValue(":item", item);
     query.bindValue(":price", price);
+
+     /* checks if team exits - if TRUE executes query*/
     if(!Exists(item, team))
     {
-
         if(query.exec())
         {
             return true;
@@ -360,26 +368,24 @@ bool Database::AddSouvenir(QString team, QString item, float price)
  */
 void Database::GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QString team)
 {
-    QSqlQuery query;
+    QSqlQuery query; //CALC - variable to access database
 
-
+    /* sql statment to get info from database*/
     query.prepare("SELECT SOUVENIR, PRICE FROM SOUVENIRS WHERE TEAM = (:team)");
     query.bindValue(":team", team);
     if(query.exec())
     {
+         /* added names and prices selected from database to appropiate vectors*/
         while(query.next())
         {
-
             names.push_back(query.value(0).toString());
             prices.push_back(query.value(1).toDouble());
-
         }
     }
     else
     {
         qDebug()<< query.lastError();
     }
-
 }
 
 /**
@@ -390,11 +396,14 @@ void Database::GetSouvenirs(QVector<QString> &names, QVector<double> &prices, QS
  */
 bool Database::Exists(QString name, QString team)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(db); //accesses database
 
+    //sql statement to get info from database
     query.prepare("SELECT * FROM SOUVENIRS WHERE TEAM = (:team) AND SOUVENIR = (:name)");
     query.bindValue(":team", team);
     query.bindValue(":name",name );
+
+    //executes query
     if(query.exec())
     {
         if(query.next())
@@ -423,11 +432,14 @@ bool Database::Exists(QString name, QString team)
  */
 bool Database::DeleteItem(QString team, QString item)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(db); //accesses database
 
+    //sql statement to delete item passed in from selected team from database
     query.prepare("DELETE FROM SOUVENIRS WHERE TEAM = (:team) AND SOUVENIR = (:name)");
     query.bindValue(":team", team);
     query.bindValue(":name",item );
+
+    //exuctes query
     if(query.exec())
     {
         return true;
@@ -448,11 +460,15 @@ bool Database::DeleteItem(QString team, QString item)
  */
 bool Database::UpdateItem(QString team, QString item, double price)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(db);    //accesses database
+
+    //sql statement to update item with name and price passed in
     query.prepare("UPDATE SOUVENIRS SET PRICE = (:price) WHERE TEAM = (:team) AND SOUVENIR = (:name)");
     query.bindValue(":team", team);
     query.bindValue(":name",item );
     query.bindValue(":price",price);
+
+    //executes query
     if(query.exec())
     {
         return true;
@@ -471,18 +487,22 @@ bool Database::UpdateItem(QString team, QString item, double price)
  */
 double Database::getItemPrice(QString team, QString item)
 {
-    double price = 0.2;
-     QSqlQuery query(db);
+    double price = 0.2; //price of item
+     QSqlQuery query(db);//accesses database
+
+     //gets prices and souvenirs from database
      query.prepare("SELECT PRICE FROM SOUVENIRS WHERE TEAM = (:team) AND SOUVENIR = (:name)");
      query.bindValue(":team", team);
      query.bindValue(":name",item );
+
+     //executes query
      if(query.exec())
      {
+         //gets price from query and saves it to variable to return
          if(query.next())
          {
               price = query.value(0).toDouble();
          }
-
      }
      else
      {
@@ -499,14 +519,14 @@ double Database::getItemPrice(QString team, QString item)
  */
 bool Database::updateStadium(QString team, QString newStadium)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(db); //variable to access stadium
+
+    //sql statement to update stadium name and team name with variable passed in
     query.prepare("UPDATE STADIUM SET STADIUM_NAME = (:newStad) WHERE TEAM_NAME = (:team)");
     query.bindValue(":newStad", newStadium);
     query.bindValue(":team", team);
 
-
-
-
+    //executes sql statement
     if(query.exec())
     {
         return true;
@@ -516,20 +536,19 @@ bool Database::updateStadium(QString team, QString newStadium)
         qDebug() << query.lastError();
     }
 
-    return false;
-
+    return false;s
 }
 
 bool::Database::updateSeatCap(QString team, int newSeatCap)
 {
-    QSqlQuery query(db);
+    QSqlQuery query(db); //variable to access database
 
+    //sql statement to update seating capacity with new capacity passed in to team passed in
     query.prepare("UPDATE STADIUM SET SEATING_CAP = (:newSeat) WHERE TEAM_NAME = (:team)");/////////////////////////////////
-
     query.bindValue(":newSeat", newSeatCap);
     query.bindValue(":team", team);
 
-
+    //executes the query
     if(query.exec())
     {
         return true;
@@ -701,11 +720,13 @@ void Database::getNodes(QVector<int> &start, QVector<int> &end, QVector<int> &di
 {
      QSqlQuery query(db);//CALC - variable to access database
 
+     //query to get all information in the node table
      query.prepare("SELECT * FROM node");
 
-
+     //executes query
      if(query.exec())
      {
+         //pushes back a node, b node, and distance to appropiate vectors
             while(query.next())
             {
                 start.push_back(query.value(0).toInt()); //a
@@ -726,10 +747,13 @@ int Database::getCount()
 {
     QSqlQuery query(db);//CALC - variable to access database
 
+    //sql statement to get count from stadium
     query.prepare("SELECT count(*) FROM STADIUM");
 
+    //executes sql statement
     if(query.exec())
     {
+        //returns the count of teams in the database
         if(query.next())
         {
             return query.value(0).toInt();
@@ -745,12 +769,15 @@ int Database::getCount()
 void Database::getTeamsAndStadiums(QVector<QString> &stadium,QVector<QString> &name )
 
 {
-    QSqlQuery query(db);
+    QSqlQuery query(db);    //accesses database
+
+    //sql statement to get stadium name, team name from stadium
     query.prepare("SELECT STADIUM_NAME, TEAM_NAME FROM STADIUM");
 
-
+    //executes query
     if(query.exec())
     {
+        //saves stadium names and team names to appropiate vectors
         while(query.next())
         {
             stadium.push_back(query.value(0).toString());
