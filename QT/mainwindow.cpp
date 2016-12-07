@@ -42,6 +42,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->usersTab->removeTab(5);
     totalDistance = 0;
     ui->TripsWidget->setCurrentIndex(0);
+
+    dijkstraRef(); //refesh dijkstra tab
 }
 
 MainWindow::~MainWindow()
@@ -75,7 +77,7 @@ void MainWindow::ClearTable(QTableWidget *table)
         table->removeColumn(0);
     }
 
-        ui->SouvenirsTable->horizontalHeader()->setStretchLastSection(false);
+    ui->SouvenirsTable->horizontalHeader()->setStretchLastSection(false);
 }
 
 
@@ -253,9 +255,55 @@ void MainWindow::refreshMST()
         }
 
     }
-     QLocale l = QLocale::system();
+    QLocale l = QLocale::system();
     ui->TotalMST->setText("Total Cost: " + l.toString(distanceTot) + " miles");
 }
+
+void MainWindow::dijkstraRef()
+{
+    ClearTable(ui->DijkstraTable);
+    QVector<int> dijkstraTemp;
+    QVector<int> distTemp;
+    graph.Dijkstra(15, distTemp, dijkstraTemp);
+    ui->DijkstraTable->insertColumn(0);
+    ui->DijkstraTable->setHorizontalHeaderItem(0, new QTableWidgetItem("Stadium"));
+    ui->DijkstraTable->insertColumn(1);
+    ui->DijkstraTable->setHorizontalHeaderItem(1, new QTableWidgetItem("Distance from LA"));
+
+    int skips = 0;
+
+
+    ui->DijkstraTable->insertRow(0);
+    ui->DijkstraTable->setItem(0, 0, new QTableWidgetItem(masterStadiumList[ dijkstraTemp[0]] + "    "));
+    ui->DijkstraTable->setItem(0, 1, new QTableWidgetItem(QString::number(distTemp[0]) + " miles"));
+
+
+    for(int i = 1; i < dijkstraTemp.size(); i++)
+    {
+
+        //will allow duplicate names as long they are in different cities prevents the source from being added
+        if((masterStadiumList[ dijkstraTemp[i]] != masterStadiumList[ dijkstraTemp[i-1]] && (distTemp[i] != distTemp[i-1])) && distTemp[i] !=0)
+        {
+            ui->DijkstraTable->insertRow(i-skips );
+            ui->DijkstraTable->setItem(i-skips, 0, new QTableWidgetItem(masterStadiumList[ dijkstraTemp[i]] + "    "));
+            ui->DijkstraTable->setItem(i-skips, 1, new QTableWidgetItem(QString::number(distTemp[i]) + " miles"));  //distTemp[i] != distTemp[i-1]
+
+        }
+        else
+        {
+            skips++;
+        }
+
+
+    }
+
+            ui->DijkstraTable->resizeColumnsToContents();
+    ui->DijkstraTable->resizeRowsToContents();
+    ui->DijkstraTable->horizontalHeader()->setStretchLastSection(true);
+
+
+}
+//ui->Information_Table->setItem(index,0,new QTableWidgetItem(stadium[index]));
 //int distanceTot;
 //QVector<int> first;
 //QVector<int> second;
@@ -601,8 +649,9 @@ void MainWindow::on_AddLV_Button_clicked()
                 fillTeamComboBoxs(); //refill the admin souvenir combobox so lv's items can be modifield
                 on_comboBox_TeamInfo_currentIndexChanged(ui->comboBox_TeamInfo->currentIndex()); //update the information tab on the fly, refresh no longer needed
                 fillAdminTeamTable(); //update admin team table
-                 fillGraph();
-                  refreshMST();
+                fillGraph();
+                refreshMST();
+                dijkstraRef();
                 QMessageBox::information(this, tr("Added"),
                                          "Las Vegas has been added");
             }
@@ -615,7 +664,7 @@ void MainWindow::on_AddLV_Button_clicked()
                                  "Las Vegas is already in the system");
     }
 
-//    fillGraph();
+    //    fillGraph();
 }
 //souvenir tab team selector, allows admin to pick which team's items to modify
 void MainWindow::on_AdminTeamSouvCombo_currentTextChanged(const QString &arg1)
@@ -913,8 +962,8 @@ void MainWindow::on_NextStadium_Button_clicked()
         //totalDistance += dist[nextStadiumClicked];
         dist.clear();
         dijkstraList.clear();
-//        QVector<QString> names = db.GetAllTeams();
-//        dijkstraList = db.TeamNamesToNodes(names);
+        //        QVector<QString> names = db.GetAllTeams();
+        //        dijkstraList = db.TeamNamesToNodes(names);
 
         int teamNum = db.GetTeamNumber(teamsSelected[nextStadiumClicked]);
         int t;
@@ -974,7 +1023,7 @@ void MainWindow::on_NextStadium_Button_clicked()
 
             ui->TotalSpentTable->removeRow(row);
 
-        i++;
+            i++;
         }
 
         ui->TotalSpentTable->resizeColumnsToContents();
@@ -986,17 +1035,17 @@ void MainWindow::on_NextStadium_Button_clicked()
 
 
 
-//        qDebug() << souvenirs.size();
+        //        qDebug() << souvenirs.size();
 
-//        for(int i = 0; i < souvenirs.size(); i++)
-//        {
-//           qDebug() << c;
-//           for(int j = 0; j < souvenirs[souvenirs.keys()[i]].size(); j++)
-//           {
-//               qDebug() << "\t" << souvenirs[souvenirs.keys()[i]].GetList()[j].key
-//                        << souvenirs[souvenirs.keys()[i]].GetList()[j].value;
-//           }
-//        }
+        //        for(int i = 0; i < souvenirs.size(); i++)
+        //        {
+        //           qDebug() << c;
+        //           for(int j = 0; j < souvenirs[souvenirs.keys()[i]].size(); j++)
+        //           {
+        //               qDebug() << "\t" << souvenirs[souvenirs.keys()[i]].GetList()[j].key
+        //                        << souvenirs[souvenirs.keys()[i]].GetList()[j].value;
+        //           }
+        //        }
 
     }
 
@@ -1160,8 +1209,8 @@ void MainWindow::on_buttonBox_accepted()
         dist.clear();
         dijkstraList.clear();
 
-//        QVector<QString> names = db.GetAllTeams();
-//        dijkstraList = db.TeamNamesToNodes(names);
+        //        QVector<QString> names = db.GetAllTeams();
+        //        dijkstraList = db.TeamNamesToNodes(names);
 
         graph.Dijkstra(db.GetTeamNumber(teamsSelected[nextStadiumClicked])-1, dist, dijkstraList);
 

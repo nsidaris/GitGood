@@ -130,7 +130,19 @@ private:
     void FillTripLabels(QString name);
 
 
+    /*!
+     * \brief refreshMST
+     *
+     * fills mst info
+     */
     void refreshMST();
+
+    /*!
+     * \brief dijkstraRef
+     *
+     * Fills dijkstra info table
+     */
+    void dijkstraRef();
 
     //add method to fill MST GUI once it is implemented
 

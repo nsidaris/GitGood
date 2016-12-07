@@ -536,7 +536,7 @@ bool Database::updateStadium(QString team, QString newStadium)
         qDebug() << query.lastError();
     }
 
-    return false;s
+    return false;
 }
 
 bool::Database::updateSeatCap(QString team, int newSeatCap)
