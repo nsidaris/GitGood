@@ -8,6 +8,7 @@ Tools used
 - QT creator
 - sqlite studio
 - Waffle.io
+- Doxygen
 
 Let's play football
 
@@ -17,6 +18,8 @@ Some of the features:
 - Football fans can buy souvenirs while on the trip and see a total for each stadium and overall total after the trip.
 - Administrators can edit the souvenir inventory for each stadium
 - And more!
+
+See source code or html documentation for more details.
 
 Google Drive: https://drive.google.com/drive/folders/0B9b1ecsyWOwzQVJsb0RoRkxFTVk?usp=sharing 
 
